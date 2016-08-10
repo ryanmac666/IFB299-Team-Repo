@@ -4,6 +4,7 @@ from django.utils import timezone
 class Event(models.Model):
 	event_name     = models.CharField(max_length=100)
 	event_location = models.CharField(max_length=500)
+	event_cost	   = models.DecimalField(max_digits=7, decimal_places=2, default=0.0)
 	start_date     = models.DateTimeField('start date')
 	end_date       = models.DateTimeField('end date')
 
