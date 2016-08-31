@@ -4,6 +4,13 @@
     <title></title>
 </head>
 <body>
-    hello
+	<h1>attending</h1>
+	{% with event_list=attending_list %}
+    {% include "events/_event_list.html" %}
+	{% endwith %}
+	<h1>volunteering</h1>
+	{% with event_list=volunteering_list %}
+    {% include "events/_event_list.html" %}
+	{% endwith %}
 </body>
 </html>

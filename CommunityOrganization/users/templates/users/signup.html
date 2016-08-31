@@ -1,12 +1,5 @@
 <form action="/users/signup" method="post">
 {% csrf_token %}
-{{ form }}
-<input type="submit" value="Submit">
-</form>
-{{ errormsg }}
-
-
---more final version (may not be set up right)--
 {% for field in form %}
     <div class="fieldWrapper">
         {{ field.errors }}
@@ -16,3 +9,5 @@
         {% endif %}
     </div>
 {% endfor %}
+	<input type="submit" name="submit">
+</form>
