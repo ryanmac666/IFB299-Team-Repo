@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from .models import Event
 from users.models import UserData, UserDonation, UserAttending
+from .utils import event_donation_total, event_donation_list
 
 """
 Display all Events
@@ -10,7 +11,7 @@ TODO: don't display past events
 """
 def event_list_view(request):
 	event_list = Event.objects.order_by('-start_date')
-	donation_list = event_donation_total(event_list)
+	donation_list = event_donation_list(event_list)
 	data_list = zip(event_list, donation_list)
 
 	context = {'data_list': data_list}
@@ -24,11 +25,15 @@ def event_view(request, event_id):
 	#get event specified in url
 	try:
 		event = Event.objects.get(id=event_id)
+		donation = event_donation_total(event)
 
 	except Event.DoesNotExist:
 		raise Http404("Event does not exist")
 
-	context = {'event': event}
+	context = {
+			'event': event,
+			'donation': donation,
+			}
 
 	return render(request, 'events/eventPage.html', context)
 
@@ -108,7 +113,7 @@ def event_volunteer_view(request, event_id):
 
 			else:
 				user_voluntee = UserData.objects.get(user=request.user)
-				user_voluntee.eventsVolunteering.add(event)
+				user_voluntee.events_volunteering.add(event)
 				user_voluntee.save()
 
 		except Event.DoesNotExist:
@@ -148,24 +153,6 @@ def event_attendee_list_view(request, event_id):
 	context = {'user_list': attending}
 
 	return render(request, 'events/eventUsers.html', context)
-
-"""
-Calculate total donation amounts for a list of events
-"""
-def event_donation_total(event_list):
-
-	donations_list = [];
-
-
-	for event in event_list:
-		donations = 0
-
-		for event_donation in UserDonation.objects.filter(event=event):
-			donations += event_donation.donation
-
-		donations_list.append(donations)
-
-	return donations_list
 
 
 

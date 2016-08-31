@@ -6,6 +6,7 @@ from django.contrib import auth
 from .forms import UserCreateForm
 from .models import UserData, UserDonation, UserAttending
 from events.models import Event
+from events.utils import event_donation_list
 
 """
 Display users attending and volunterring events
@@ -19,11 +20,18 @@ def user_view(request):
 	else:
 		#get all events the user is atteneding or volunteering
 		data = UserData.objects.get(user=request.user)
+
 		attending_list = Event.objects.filter(userattending__user=data)
+		attending_donation_list = event_donation_list(attending_list)
+		attending_data = zip(attending_list, attending_donation_list)
+
 		volunteering_list = Event.objects.filter(userdata__user=request.user)
+		volunteering_donation_list = event_donation_list(volunteering_list)
+		volunteering_data = zip(volunteering_list, volunteering_donation_list)
+
 		context = {
-			'attending_list': attending_list,
-			'volunteering_list': volunteering_list,
+			'attending_data': attending_data,
+			'volunteering_data': volunteering_data,
 			}
 
 		return render(request, 'users/users.html', context)
