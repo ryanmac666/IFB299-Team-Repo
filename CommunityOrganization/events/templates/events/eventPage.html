@@ -15,5 +15,15 @@
         			<li>end: {{ event.end_date }}</li>
         		</ul>
 	</ul>
+	<form action="{% url 'joinEvent' event.id %}" method="post">
+		{% csrf_token %}
+		Number of family members attending: <input type="number" name="amount"><br>
+		<input type="submit" name="submit">
+	</form>
+	<form action="{% url 'donateEvent' event.id %}" method="post">
+		{% csrf_token %}
+		Donation amount: <input type="number" step="0.01" name="amount"><br>
+		<input type="submit" name="submit">
+	</form>
 </body>
 </html>

@@ -1,12 +1,12 @@
-{% if event_list %}
+{% if data_list %}
     <ul>
-        {% for event in event_list %}
+        {% for event, donation in data_list %}
         	<li><a href="{% url 'event' event.id %}">{{ event.event_name }}</a></li>
         		<ul>
         			<li>{{ event.event_location }}</li>
         			<li>start: {{ event.start_date }}</li>
         			<li>end: {{ event.end_date }}</li>
-                    <li>total donations: {%%}</li>
+                    <li>total donations: {{ donation }}</li>
         		</ul>
 		{% endfor %}
     </ul>
