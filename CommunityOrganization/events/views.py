@@ -4,58 +4,78 @@ from django.contrib.auth.models import User
 from .models import Event
 from users.models import UserData, UserDonation, UserAttending
 
-def eventsIndex(request):
-	#get the 5 most resent events
-	event_list = Event.objects.order_by('-start_date')[:5]
-	donationat_list = eventTotalDonations(event_list)
-	data_list = zip(event_list, donationat_list)
+"""
+Display all Events
+TODO: don't display past events
+"""
+def event_list_view(request):
+	event_list = Event.objects.order_by('-start_date')
+	donation_list = event_donation_total(event_list)
+	data_list = zip(event_list, donation_list)
 
 	context = {'data_list': data_list}
+
 	return render(request, 'events/eventIndex.html', context)
 
-def event(request, eventID):
+"""
+Display all information about an event 
+"""
+def event_view(request, event_id):
 	#get event specified in url
 	try:
-		event = Event.objects.get(id=eventID)
+		event = Event.objects.get(id=event_id)
+
 	except Event.DoesNotExist:
 		raise Http404("Event does not exist")
 
 	context = {'event': event}
+
 	return render(request, 'events/eventPage.html', context)
 
-def eventJoin(request, eventID):
+"""
+Add user to event attendee table
+"""
+def event_attend_view(request, event_id):
 	amount = request.POST.get('amount', 0)
 
 	if not request.user.is_authenticated:
 		return redirect('/users/login')
+
 	else:
 		try:
-			event = Event.objects.get(id=eventID)
+			event = Event.objects.get(id=event_id)
 			user = UserData.objects.get(user=request.user)
 			#make sure user is not already attending this event
 			if UserAttending.objects.filter(user=user, event=event).exists():
 				raise Http404("already in event! p.s this is for debuging only. make a page!")
+
 			else:
 				attendingUser = UserAttending(user=user, event=event, family=amount)
 				attendingUser.save()
 
 		except Event.DoesNotExist:
 			raise Http404("Event does not exist")
+
 		except UserData.DoesNotExist:
 			raise Http404("Missing user data! what?!")
 
 	event_list = Event.objects.order_by('-start_date')[:5]
 	context = {'event_list': event_list}
+
 	return render(request, 'events/eventIndex.html', context)
 
-def eventDonate(request, eventID):
+"""
+Add a donation to the event
+"""
+def event_donate_view(request, event_id):
 	amount = request.POST.get('amount', 0)
 
 	if not request.user.is_authenticated:
 		return redirect('/users/login')
+
 	else:
 		try:
-			event = Event.objects.get(id=eventID)
+			event = Event.objects.get(id=event_id)
 			user = UserData.objects.get(user=request.user)
 
 			donation = UserDonation(user=user, event=event, donation=amount)
@@ -63,65 +83,89 @@ def eventDonate(request, eventID):
 
 		except Event.DoesNotExist:
 			raise Http404("Event does not exist")
+
 		except UserData.DoesNotExist:
 			raise Http404("Missing user data! what?!")
 
 	event_list = Event.objects.order_by('-start_date')[:5]
 	context = {'event_list': event_list}
+
 	return render(request, 'events/eventIndex.html', context)
 
-def eventVolunteer(request, eventID):
+"""
+Add user to volunteer table
+"""
+def event_volunteer_view(request, event_id):
 	if not request.user.is_authenticated:
 		return redirect('/users/login')
+
 	else:
 		try:
-			event = Event.objects.get(id=eventID)
+			event = Event.objects.get(id=event_id)
 			#make sure user is not already volunteer for the event this event
-			if Event.objects.filter(id=eventID, userdata__user=request.user).exists():
+			if Event.objects.filter(id=event_id, userdata__user=request.user).exists():
 				raise Http404("already volunteering! p.s this is for debuging only. make a page!")
+
 			else:
-				userVoluntee = UserData.objects.get(user=request.user)
-				userVoluntee.eventsVolunteering.add(event)
-				userVoluntee.save()
+				user_voluntee = UserData.objects.get(user=request.user)
+				user_voluntee.eventsVolunteering.add(event)
+				user_voluntee.save()
 
 		except Event.DoesNotExist:
 			raise Http404("Event does not exist")
 
 	event_list = Event.objects.order_by('-start_date')[:5]
 	context = {'event_list': event_list}
+
 	return render(request, 'events/eventIndex.html', context)
 
-def eventVolunteering(request, eventID):
+"""
+Display a list of all volunteers
+"""
+def event_volunteer_list_view(request, event_id):
 	#get event specified in url
 	try:
-		volunteers = User.objects.filter(userdata__eventsVolunteering__id=eventID)
+		volunteers = User.objects.filter(userdata__events_volunteering__id=event_id)
+
 	except Event.DoesNotExist:
 		raise Http404("Event does not exist")
 
-	context = {'users': volunteers}
+	context = {'user_list': volunteers}
+
 	return render(request, 'events/eventUsers.html', context)
 
-def eventAttending(request, eventID):
+"""
+Display a list of all attendees
+"""
+def event_attendee_list_view(request, event_id):
 
 	try:
-		attending = User.objects.filter(userdata__userattending__event__id=eventID)
+		attending = User.objects.filter(userdata__userattending__event__id=event_id)
+
 	except Event.DoesNotExist:
 		raise Http404("Event does not exist")
 
-	context = {'users': attending}
+	context = {'user_list': attending}
+
 	return render(request, 'events/eventUsers.html', context)
 
-def eventTotalDonations(eventList):
+"""
+Calculate total donation amounts for a list of events
+"""
+def event_donation_total(event_list):
 
-	donationsList = [];
+	donations_list = [];
 
-	for event in eventList:
+
+	for event in event_list:
 		donations = 0
-		for eventDonation in UserDonation.objects.filter(event=event):
-			donations += eventDonation.donation
-		donationsList.append(donations)
 
-	return donationsList
+		for event_donation in UserDonation.objects.filter(event=event):
+			donations += event_donation.donation
+
+		donations_list.append(donations)
+
+	return donations_list
 
 
 

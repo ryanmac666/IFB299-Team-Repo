@@ -1,7 +1,7 @@
 {% if data_list %}
     <ul>
         {% for event, donation in data_list %}
-        	<li><a href="{% url 'event' event.id %}">{{ event.event_name }}</a></li>
+        	<li><a href="{% url 'event_view' event.id %}">{{ event.event_name }}</a></li>
         		<ul>
         			<li>{{ event.event_location }}</li>
         			<li>start: {{ event.start_date }}</li>

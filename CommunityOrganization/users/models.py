@@ -9,7 +9,7 @@ UserData Table:
 Small comment here
 """
 class UserData(models.Model):
-	eventsVolunteering = models.ManyToManyField('events.Event')
+	events_volunteering = models.ManyToManyField('events.Event')
 	user               = models.OneToOneField(User, null=True)
 
 """

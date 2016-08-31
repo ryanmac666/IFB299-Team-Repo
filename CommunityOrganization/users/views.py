@@ -7,10 +7,15 @@ from .forms import UserCreateForm
 from .models import UserData, UserDonation, UserAttending
 from events.models import Event
 
-def users(request):
+"""
+Display users attending and volunterring events
+TODO: Display user information
+"""
+def user_view(request):
 
 	if not request.user.is_authenticated:
 		return redirect('/users/login')
+
 	else:
 		#get all events the user is atteneding or volunteering
 		data = UserData.objects.get(user=request.user)
@@ -20,9 +25,14 @@ def users(request):
 			'attending_list': attending_list,
 			'volunteering_list': volunteering_list,
 			}
+
 		return render(request, 'users/users.html', context)
 
-def signup(request):
+"""
+Allow users to create an account
+TODO: Ask for information such as first and last name
+"""
+def user_signup_view(request):
 
 	if request.method == 'POST':
 		form = UserCreateForm(request.POST)
@@ -36,22 +46,35 @@ def signup(request):
 
 	return render(request, 'users/signup.html', context)
 
-def loginUser(request):
+"""
+Allow users to login
+"""
+def user_login_view(request):
 	context = {}
-	#context.update(csrf(request))
-	return render(request, 'users/login.html', {})
 
-def authUser(request):
+	return render(request, 'users/login.html', context)
+
+"""
+Authenticate user login data for POST request
+"""
+def user_auth_view(request):
 	username = request.POST.get('username', '')
 	password = request.POST.get('password', '')
 	user = authenticate(username=username, password=password)
 
 	if user is not None:
 		login(request, user)
+
 		return redirect('/events')
+
 	else:
+
 		return redirect('/users/login')
 
-def logoutUser(request):
+"""
+Log users out
+"""
+def user_logout_view(request):
     logout(request)
+
     return redirect('/users/login')
