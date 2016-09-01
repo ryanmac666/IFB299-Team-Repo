@@ -1,9 +1,15 @@
+{% load bootstrap3 %}
+
+{% bootstrap_css %}
+
 {% if user_list %}
-    <ul>
+<div class="container">
+    <ul class="list-group">
         {% for user in user_list %}
-        	<li>{{ user.username }}</li>
+        	<li class="list-group-item">{{ user.username }}</li>
 		{% endfor %}
     </ul>
+</div>
 {% else %}
 		<p>Nothing.</p>
 {% endif %}

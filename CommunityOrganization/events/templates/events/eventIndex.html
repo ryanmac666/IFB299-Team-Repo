@@ -1,12 +1,15 @@
+{% load bootstrap3 %}
+
+{% bootstrap_css %}
+
 <!DOCTYPE html>
 <html>
 <head>
 	<title>Index</title>
 </head>
 <body>
-	<h1>
-		Events test
-	</h1>
+<div class="container">
 	{% include "events/_event_data.html" %}
+<div class="container">
 </body>
 </html>

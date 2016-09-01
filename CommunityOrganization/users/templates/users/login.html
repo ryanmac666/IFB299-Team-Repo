@@ -1,6 +1,13 @@
-<form action="/users/auth" method="post">
-{% csrf_token %}
-user:<input type="text" name="username"><br>
-password:<input type="password" name="password"><br>
-<input type="submit" value="Submit">
-</form>
+{% load bootstrap3 %}
+
+{% bootstrap_css %}
+
+<div class="container">
+	<form action="/users/auth" method="post" class="form-signin">
+		{% csrf_token %}
+		<h2 class="form-signin-heading">Please sign in</h2>
+		<input type="text" name="username" class="form-control" placeholder="user name"><br>
+		<input type="password" name="password" class="form-control" placeholder="password"><br>
+		<button type="submit" value="Submit" class="btn btn-lg btn-primary btn-block">Login</button>
+	</form>
+</div>

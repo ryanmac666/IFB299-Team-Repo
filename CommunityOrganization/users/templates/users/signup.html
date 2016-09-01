@@ -1,6 +1,21 @@
-<form action="/users/signup" method="post">
-{% csrf_token %}
-{% for field in form %}
+{% load bootstrap3 %}
+
+{% bootstrap_css %}
+
+
+<div class="container">
+	<form action="/users/signup" method="post">
+	{% csrf_token %}
+
+		{% bootstrap_form form %}
+	    {% buttons %}
+	        <button type="submit" class="btn btn-primary">Signup</button>
+	    {% endbuttons %}
+	</form>
+</div>
+
+
+<!--{% for field in form %}
     <div class="fieldWrapper">
         {{ field.errors }}
         {{ field.label_tag }} {{ field }}
@@ -8,6 +23,4 @@
         <p class="help">{{ field.help_text|safe }}</p>
         {% endif %}
     </div>
-{% endfor %}
-	<input type="submit" name="submit">
-</form>
+{% endfor %}-->
