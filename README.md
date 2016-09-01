@@ -4,7 +4,7 @@ discription here I guess
 
 ## Dependencies
 * [Django](https://www.djangoproject.com/)
-* [Bootstrap 3 for Django](aut://github.com/dyve/django-bootstrap3)
+* [Bootstrap3 for Django](https://github.com/dyve/django-bootstrap3)
 
 ## Run
 ```shell
