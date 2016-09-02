@@ -15,7 +15,10 @@ def event_list_view(request):
     donation_list = event_donation_list(event_list)
     data_list = zip(event_list, donation_list)
 
-    context = {'data_list': data_list}
+    context = {
+        'data_list': data_list,
+        'user': request.user,
+    }
 
     return render(request, 'events/eventIndex.html', context)
 
