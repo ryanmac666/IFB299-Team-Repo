@@ -30,7 +30,6 @@
         <div class="collapse navbar-collapse" id="topNavBar">
             <ul class="nav navbar-nav">
                 <li class="{% block user_active %}{% endblock %}"><a href="{% url 'user_view' %}"><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp; Users</a></li>
-                <li class="{% block user_login_active %}{% endblock %}"><a href="{% url 'user_login_view' %}"><span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp; User Login</a></li>
                 <li class="{% block event_list_active %}{% endblock %}"><a href="{% url 'event_list_view' %}"><span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>&nbsp; Events</a></li>
             </ul>
 {#            <form class="navbar-form navbar-left" role="search" method="get" action="{% url 'event_list_view' %}">#}
@@ -45,11 +44,19 @@
                         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp; Add Events
                     </a>
                 </li>
+                {% if user.is_authenticated %}
                 <li>
-                    <a href="#">
+                    <a href="{% url 'user_logout_view' %}">
                         <span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp; Logout
                     </a>
                 </li>
+                {% else %}
+                <li class="{% block user_login_active %}{% endblock %}">
+                    <a href="{% url 'user_login_view' %}">
+                        <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp; User Login
+                    </a>
+                </li>
+                {% endif %}
             </ul>
         </div>
     </div>
