@@ -5,6 +5,7 @@ from django.contrib import auth
 
 from .forms import UserCreateForm
 from .models import UserData, UserDonation, UserAttending
+
 from events.models import Event
 from events.utils import event_donation_list
 

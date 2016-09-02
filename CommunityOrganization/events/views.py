@@ -2,6 +2,7 @@ from django.http import Http404
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from .models import Event
+# from CommunityOrganization.users.models import UserData, UserDonation, UserAttending
 from users.models import UserData, UserDonation, UserAttending
 from .utils import event_donation_total, event_donation_list
 
