@@ -1,13 +1,21 @@
 {% if data_list %}
-        {% for event, donation in data_list %}
-        	<h2 class="form-signin-heading"><a href="{% url 'event_view' event.id %}">{{ event.event_name }}</a></h2>
-        		<ul class="list-group">
-        			<li class="list-group-item">{{ event.event_location }}</li>
-        			<li class="list-group-item">start: {{ event.start_date }}</li>
-        			<li class="list-group-item">end: {{ event.end_date }}</li>
-                    <li class="list-group-item">total donations: ${{ donation }}</li>
-        		</ul>
-		{% endfor %}
+    {% for event, donation in data_list %}
+        <div class="col-sm-4 col-lg-4">
+            <div class="thumbnail">
+                <div class="caption">
+                    <h2 class="form-signin-heading"><a href="{% url 'event_view' event.id %}">{{ event.event_name }}</a></h2>
+
+                    <!-- View Details -->
+                    <ul class="list-group">
+                        <li class="list-group-item">{{ event.event_location }}</li>
+                        <li class="list-group-item">Start: {{ event.start_date }}</li>
+                        <li class="list-group-item">End: {{ event.end_date }}</li>
+                        <li class="list-group-item">Total donations: ${{ donation }}</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
 {% else %}
-		<p>No Events.</p>
+    <p>No Events.</p>
 {% endif %}

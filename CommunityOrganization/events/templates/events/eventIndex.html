@@ -1,11 +1,13 @@
 {% extends 'events/base.html' %}
-{% block user_active %}active{% endblock %}
+{% block event_list_active %}active{% endblock %}
 
 {% block body %}
-    <div class="container">
-        {% include "events/_event_data.html" %}
+    <div class="container-fluid">
+        <div class="row">
+            {% include "events/_event_data.html" %}
+        </div>
     </div>
-    <div class="container">
+    <div class="container-fluid">
     </div>
 {% endblock %}
 
