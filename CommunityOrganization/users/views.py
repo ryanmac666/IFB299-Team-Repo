@@ -49,7 +49,7 @@ def user_signup_view(request):
 
 		if form.is_valid():
 			form.save()
-			return users(request)
+			return user(request)
 
 	form = UserCreateForm()
 	context = {
