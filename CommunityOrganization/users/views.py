@@ -31,9 +31,10 @@ def user_view(request):
 		volunteering_data = zip(volunteering_list, volunteering_donation_list)
 
 		context = {
-			'attending_data': attending_data,
-			'volunteering_data': volunteering_data,
-			}
+		    'attending_data': attending_data,
+		    'volunteering_data': volunteering_data,
+		    'user': request.user,
+		}
 
 		return render(request, 'users/users.html', context)
 
@@ -51,7 +52,10 @@ def user_signup_view(request):
 			return users(request)
 
 	form = UserCreateForm()
-	context = {'form': form}
+	context = {
+	    'form': form,
+	    'user': request.user,
+	}
 
 	return render(request, 'users/signup.html', context)
 
@@ -59,7 +63,9 @@ def user_signup_view(request):
 Allow users to login
 """
 def user_login_view(request):
-	context = {}
+	context = {
+	    'user': request.user,
+	}
 
 	return render(request, 'users/login.html', context)
 

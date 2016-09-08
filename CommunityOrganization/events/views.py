@@ -2,7 +2,6 @@ from django.http import Http404
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from .models import Event
-# from CommunityOrganization.users.models import UserData, UserDonation, UserAttending
 from users.models import UserData, UserDonation, UserAttending
 from .utils import event_donation_total, event_donation_list
 
@@ -31,12 +30,20 @@ def event_view(request, event_id):
         event = Event.objects.get(id=event_id)
         donation = event_donation_total(event)
 
+        #test if user is attending or volunteering for the event
+        data = UserData.objects.get(user=request.user)
+        is_attending = Event.objects.filter(userattending__user=data, id=event_id).exists()
+        is_volunteering = Event.objects.filter(userdata__user=request.user).exists()
+
     except Event.DoesNotExist:
         raise Http404("Event does not exist")
 
     context = {
         'event': event,
         'donation': donation,
+        'user': request.user,
+        'is_attending': is_attending,
+        'is_volunteering': is_volunteering,
     }
 
     return render(request, 'events/eventPage.html', context)
@@ -69,9 +76,8 @@ def event_attend_view(request, event_id):
             raise Http404("Missing user data! what?!")
 
     event_list = Event.objects.order_by('-start_date')[:5]
-    context = {'event_list': event_list}
 
-    return render(request, 'events/eventIndex.html', context)
+    return redirect('/events/')
 
 """
 Add a donation to the event
@@ -97,9 +103,8 @@ def event_donate_view(request, event_id):
             raise Http404("Missing user data! what?!")
 
     event_list = Event.objects.order_by('-start_date')[:5]
-    context = {'event_list': event_list}
 
-    return render(request, 'events/eventIndex.html', context)
+    return redirect('/events/')
 
 """
 Add user to volunteer table
@@ -124,9 +129,8 @@ def event_volunteer_view(request, event_id):
             raise Http404("Event does not exist")
 
     event_list = Event.objects.order_by('-start_date')[:5]
-    context = {'event_list': event_list}
-
-    return render(request, 'events/eventIndex.html', context)
+    
+    return redirect('/events/')
 
 """
 Display a list of all volunteers
@@ -139,7 +143,10 @@ def event_volunteer_list_view(request, event_id):
     except Event.DoesNotExist:
         raise Http404("Event does not exist")
 
-    context = {'user_list': volunteers}
+    context = {
+        'user_list': volunteers,
+        'user': request.user,
+    }
 
     return render(request, 'events/eventUsers.html', context)
 
@@ -154,7 +161,10 @@ def event_attendee_list_view(request, event_id):
     except Event.DoesNotExist:
         raise Http404("Event does not exist")
 
-    context = {'user_list': attending}
+    context = {
+        'user_list': attending,
+        'user': request.user,
+    }
 
     return render(request, 'events/eventUsers.html', context)
 

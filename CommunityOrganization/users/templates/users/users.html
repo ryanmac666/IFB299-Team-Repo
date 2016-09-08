@@ -1,22 +1,21 @@
+{% extends 'events/base.html' %}
+{% block event_list_active %}active{% endblock %}
+
 {% load bootstrap3 %}
 
 {% bootstrap_css %}
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title></title>
-</head>
-<body>
-<div class="container">
-	<h1 class="page-header">attending</h1>
-	{% with data_list=attending_data %}
-    {% include "events/_event_data.html" %}
-	{% endwith %}
-	<h1 class="page-header">volunteering</h1>
-	{% with data_list=volunteering_data %}
-    {% include "events/_event_data.html" %}
-	{% endwith %}
-</div>
-</body>
-</html>
+{% block body %}
+	<div class="container">
+		<h1 class="page-header">attending</h1>
+		{% with data_list=attending_data %}
+	    {% include "events/_event_data.html" %}
+		{% endwith %}
+	</div>
+	<div class="container">
+		<h1 class="page-header">volunteering</h1>
+		{% with data_list=volunteering_data %}
+	    {% include "events/_event_data.html" %}
+		{% endwith %}
+	</div>
+{% endblock %}

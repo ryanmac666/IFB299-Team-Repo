@@ -1,13 +1,20 @@
+{% extends 'events/base.html' %}
+{% block event_list_active %}active{% endblock %}
+
 {% load bootstrap3 %}
 
 {% bootstrap_css %}
 
-<div class="container">
-	<form action="/users/auth" method="post" class="form-signin">
-		{% csrf_token %}
-		<h2 class="form-signin-heading">Please sign in</h2>
-		<input type="text" name="username" class="form-control" placeholder="user name"><br>
-		<input type="password" name="password" class="form-control" placeholder="password"><br>
-		<button type="submit" value="Submit" class="btn btn-lg btn-primary btn-block">Login</button>
-	</form>
-</div>
+
+{% block body %}
+	<div class="container">
+		<form action="/users/auth" method="post" class="form-signin">
+			{% csrf_token %}
+			<h2 class="form-signin-heading">Please sign in</h2>
+			<input type="text" name="username" class="form-control" placeholder="user name"><br>
+			<input type="password" name="password" class="form-control" placeholder="password"><br>
+			Not a member? <a href="{% url 'user_signup_view' %}">Register.</a><br>
+			<button type="submit" value="Submit" class="btn btn-lg btn-primary btn-block">Login</button>
+		</form>
+	</div>
+{% endblock %}

@@ -1,15 +1,21 @@
+{% extends 'events/base.html' %}
+{% block event_list_active %}active{% endblock %}
+
 {% load bootstrap3 %}
 
 {% bootstrap_css %}
 
-{% if user_list %}
-<div class="container">
-    <ul class="list-group">
-        {% for user in user_list %}
-        	<li class="list-group-item">{{ user.username }}</li>
-		{% endfor %}
-    </ul>
-</div>
-{% else %}
-		<p>Nothing.</p>
-{% endif %}
+
+{% block body %}
+	{% if user_list %}
+		<div class="container">
+		<ul class="list-group">
+		    {% for user in user_list %}
+		    	<li class="list-group-item">{{ user.username }}</li>
+			{% endfor %}
+		</ul>
+		</div>
+	{% else %}
+			<p>Nothing.</p>
+	{% endif %}
+{% endblock %}
