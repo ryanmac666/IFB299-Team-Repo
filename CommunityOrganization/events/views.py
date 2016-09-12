@@ -1,6 +1,7 @@
 from django.http import Http404
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
+from django.db.models import Q
 from .models import Event
 from users.models import UserData, UserDonation, UserAttending
 from .utils import event_donation_total, event_donation_list
@@ -14,11 +15,26 @@ def event_list_view(request):
     donation_list = event_donation_list(event_list)
     data_list = zip(event_list, donation_list)
 
-    context = {
-        'data_list': data_list,
-        'user': request.user,
-    }
+    # SEARCH FUNCTION
+    query = request.GET.get("q")
+    if query:
+        event_list = event_list.filter(
+            Q(event_name__icontains=query) |
+            Q(event_location__icontains=query)
+        ).distinct()
+        donation_list = event_donation_list(event_list)
+        data_list = zip(event_list, donation_list)
 
+        context = {
+            'data_list': data_list,
+            'user': request.user,
+        }
+
+    else:
+        context = {
+            'data_list': data_list,
+            'user': request.user,
+        }
     return render(request, 'events/eventIndex.html', context)
 
 """
