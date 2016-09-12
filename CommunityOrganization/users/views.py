@@ -49,6 +49,13 @@ def user_signup_view(request):
 
 		if form.is_valid():
 			form.save()
+			send_mail(
+                            'Registration successful',
+                            'Thanks for registering',
+                            'ifb299dummyemail@gmail.com',
+                            ['ifb299dummyemail@gmail.com'],
+                            fail_silently=False,
+                        )
 			return user(request)
 
 	form = UserCreateForm()
