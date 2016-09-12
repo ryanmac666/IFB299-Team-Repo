@@ -47,11 +47,16 @@
                 </li>
                 {% endif %}
                 {% if user.is_authenticated %}
-                <li>
-                    <a href="{% url 'user_logout_view' %}">
-                        <span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp; Logout
-                    </a>
-                </li>
+                    <li>
+                        <a href="#">
+                            Welcome,{{ user.username }}
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'user_logout_view' %}">
+                            <span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp; Logout
+                        </a>
+                    </li>
                 {% else %}
                 <li class="{% block user_login_active %}{% endblock %}">
                     <a href="{% url 'user_login_view' %}">
