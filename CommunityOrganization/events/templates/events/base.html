@@ -58,17 +58,21 @@
 
                     <!-- NOTIFICATION -->
                     <!-- Add notification function here -->
-{#                    {% if messages %}#}
-{#                    <li>#}
-{#                        <ul class="messages">#}
-{#                            {% for message in messages %}#}
-{#                                <li>#}
-{#                                    <a{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</a>#}
-{#                                </li>#}
-{#                            {% endfor %}#}
-{#                        </ul>#}
-{#                    </li>#}
-{#                    {% endif %}#}
+                    <li>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Notification <span class="caret"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            {% if messages %}
+                                {% for message in messages %}
+                                    <li {% if message.tags == "success" %} class="alert alert-dismissible"{% endif %}>
+                                        {{ message }}
+                                    </li>
+                                    <li class="divider"></li>
+                                {% endfor %}
+                            {% endif %}
+                        </ul>
+                    </li>
 
                     <li>
                         <a href="{% url 'user_logout_view' %}">

@@ -157,7 +157,7 @@ def event_volunteer_list_view(request, event_id):
     try:
         volunteers = User.objects.filter(userdata__events_volunteering__id=event_id)
         # Testing
-        # messages.add_message(request, messages.INFO, 'Hello world.')
+        messages.success(request, 'Hello world.')
 
     except Event.DoesNotExist:
         raise Http404("Event does not exist")
@@ -165,7 +165,6 @@ def event_volunteer_list_view(request, event_id):
     context = {
         'user_list': volunteers,
         'user': request.user,
-        # 'messages': messages,
     }
 
     return render(request, 'events/eventUsers.html', context)
