@@ -58,6 +58,17 @@
 
                     <!-- NOTIFICATION -->
                     <!-- Add notification function here -->
+{#                    {% if messages %}#}
+{#                    <li>#}
+{#                        <ul class="messages">#}
+{#                            {% for message in messages %}#}
+{#                                <li>#}
+{#                                    <a{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</a>#}
+{#                                </li>#}
+{#                            {% endfor %}#}
+{#                        </ul>#}
+{#                    </li>#}
+{#                    {% endif %}#}
 
                     <li>
                         <a href="{% url 'user_logout_view' %}">

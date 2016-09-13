@@ -5,6 +5,7 @@ from django.db.models import Q
 from .models import Event
 from users.models import UserData, UserDonation, UserAttending
 from .utils import event_donation_total, event_donation_list
+from django.contrib import messages
 
 """
 Display all Events
@@ -155,6 +156,8 @@ def event_volunteer_list_view(request, event_id):
     #get event specified in url
     try:
         volunteers = User.objects.filter(userdata__events_volunteering__id=event_id)
+        # Testing
+        # messages.add_message(request, messages.INFO, 'Hello world.')
 
     except Event.DoesNotExist:
         raise Http404("Event does not exist")
@@ -162,6 +165,7 @@ def event_volunteer_list_view(request, event_id):
     context = {
         'user_list': volunteers,
         'user': request.user,
+        # 'messages': messages,
     }
 
     return render(request, 'events/eventUsers.html', context)
