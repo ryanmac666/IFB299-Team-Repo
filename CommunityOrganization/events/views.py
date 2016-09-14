@@ -4,9 +4,8 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 from .models import Event
 from users.models import UserData, UserDonation, UserAttending
-from .utils import event_donation_total, event_donation_list
+from .utils import event_donation_total, event_donation_list, event_notify
 from django.contrib import messages
-from notifications.signals import notify
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
 
@@ -85,12 +84,7 @@ def event_attend_view(request, event_id):
             else:
                 attendingUser = UserAttending(user=user, event=event, family=amount)
                 attendingUser.save()
-                #notify user and committee members
-                notify.send(request.user, recipient=request.user, verb='You are attending ', target=event)
-                for committee_member in list(User.objects.filter(is_staff=True)):
-                    #don't norify an attending committee member twice
-                    if committee_member is not request.user:
-                        notify.send(request.user, recipient=committee_member, verb=u' is attending ', target=event)
+                event_notify(request, event, "you are attending", "is attending")
 
         except Event.DoesNotExist:
             raise Http404("Event does not exist")
@@ -118,6 +112,7 @@ def event_donate_view(request, event_id):
 
             donation = UserDonation(user=user, event=event, donation=amount)
             donation.save()
+            event_notify(request, event, "you are donating to", "is donating to")
 
         except Event.DoesNotExist:
             raise Http404("Event does not exist")
@@ -125,7 +120,7 @@ def event_donate_view(request, event_id):
         except UserData.DoesNotExist:
             raise Http404("Missing user data! what?!")
 
-    event_list = Event.objects.order_by('-start_date')[:5]
+    #event_list = Event.objects.order_by('-start_date')[:5]
 
     return redirect('/events/')
 
@@ -147,11 +142,12 @@ def event_volunteer_view(request, event_id):
                 user_voluntee = UserData.objects.get(user=request.user)
                 user_voluntee.events_volunteering.add(event)
                 user_voluntee.save()
+                event_notify(request, event, "you are volunteering for", "is volunteering for")
 
         except Event.DoesNotExist:
             raise Http404("Event does not exist")
 
-    event_list = Event.objects.order_by('-start_date')[:5]
+    #event_list = Event.objects.order_by('-start_date')[:5]
     
     return redirect('/events/')
 
@@ -209,7 +205,7 @@ def event_mark_all_view(request):
 
         print("fuck:")
 
-    return HttpResponse(simplejson.dumps(response))
+    return HttpResponse('')
 
 
 

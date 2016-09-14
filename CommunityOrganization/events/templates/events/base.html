@@ -31,7 +31,7 @@
                         "view_all":true,
                     }, 
                     success: function(response) {
-                      alert("hi");
+                      //alert("hi");
                     }
                 });
             });
@@ -98,6 +98,8 @@
                                             {{ notify.target }}
                                         </a></li>
                                     {% endfor %}
+                                {% else %}
+                                    <li>No notifcations</li>
                                 {% endif %}
                                 <li class="divider"></li>
                                 <li class="dropdown-header">More</li>
