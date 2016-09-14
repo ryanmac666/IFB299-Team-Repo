@@ -41,14 +41,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'bootstrap3',
+    'notifications',
 ]
-
-#AUTHENTICATION_BACKENDS = [
-#   'social.backends.facebook.FacebookOAuth2',
-   #'social.backends.google.GoogleOAuth2',
-   #'social.backends.twitter.TwitterOAuth',
-#   'django.contrib.auth.backends.ModelBackend',
-#]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',

@@ -6,6 +6,9 @@ from .models import Event
 from users.models import UserData, UserDonation, UserAttending
 from .utils import event_donation_total, event_donation_list
 from django.contrib import messages
+from notifications.signals import notify
+from django.views.decorators.csrf import csrf_exempt
+from django.http import HttpResponse
 
 """
 Display all Events
@@ -15,6 +18,7 @@ def event_list_view(request):
     event_list = Event.objects.order_by('-start_date')
     donation_list = event_donation_list(event_list)
     data_list = zip(event_list, donation_list)
+    notify_list = request.user.notifications.unread()[:5]
 
     # SEARCH FUNCTION
     query = request.GET.get("q")
@@ -26,16 +30,12 @@ def event_list_view(request):
         donation_list = event_donation_list(event_list)
         data_list = zip(event_list, donation_list)
 
-        context = {
-            'data_list': data_list,
-            'user': request.user,
-        }
+    context = {
+        'data_list': data_list,
+        'user': request.user,
+        'notify_list': notify_list,
+    }
 
-    else:
-        context = {
-            'data_list': data_list,
-            'user': request.user,
-        }
     return render(request, 'events/eventIndex.html', context)
 
 """
@@ -85,6 +85,12 @@ def event_attend_view(request, event_id):
             else:
                 attendingUser = UserAttending(user=user, event=event, family=amount)
                 attendingUser.save()
+                #notify user and committee members
+                notify.send(request.user, recipient=request.user, verb='You are attending ', target=event)
+                for committee_member in list(User.objects.filter(is_staff=True)):
+                    #don't norify an attending committee member twice
+                    if committee_member is not request.user:
+                        notify.send(request.user, recipient=committee_member, verb=u' is attending ', target=event)
 
         except Event.DoesNotExist:
             raise Http404("Event does not exist")
@@ -186,6 +192,24 @@ def event_attendee_list_view(request, event_id):
     }
 
     return render(request, 'events/eventUsers.html', context)
+
+"""
+Mark all user notifications as read
+"""
+@csrf_exempt
+def event_mark_all_view(request):
+
+    mark_all = request.POST.get('view_all', False)
+
+    if mark_all:
+
+        request.user.notifications.unread().mark_all_as_read()
+        
+    else:
+
+        print("fuck:")
+
+    return HttpResponse(simplejson.dumps(response))
 
 
 

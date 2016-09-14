@@ -16,10 +16,12 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin
 from django.views.generic.base import RedirectView
+import notifications.urls
 
 urlpatterns = [
     url(r'^$', RedirectView.as_view(url='events/', permanent=False), name='index'),
     url(r'^admin/', admin.site.urls),
     url(r'^events/', include('events.urls')),
     url(r'^users/', include('users.urls')),
+    url('^inbox/notifications/', include(notifications.urls, namespace='notifications')),
 ]
