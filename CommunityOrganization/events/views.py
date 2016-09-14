@@ -17,7 +17,12 @@ def event_list_view(request):
     event_list = Event.objects.order_by('-start_date')
     donation_list = event_donation_list(event_list)
     data_list = zip(event_list, donation_list)
-    notify_list = request.user.notifications.unread()[:5]
+    notify_list = None
+
+    #ensure user is not anonymous
+    if request.user.is_authenticated:
+        notify_list = request.user.notifications.unread()[:5]
+
 
     # SEARCH FUNCTION
     query = request.GET.get("q")
@@ -45,11 +50,15 @@ def event_view(request, event_id):
     try:
         event = Event.objects.get(id=event_id)
         donation = event_donation_total(event)
+        is_attending = None
+        is_volunteering = None
 
-        #test if user is attending or volunteering for the event
-        data = UserData.objects.get(user=request.user)
-        is_attending = Event.objects.filter(userattending__user=data, id=event_id).exists()
-        is_volunteering = Event.objects.filter(userdata__user=request.user).exists()
+        #ensure user is not anonymous
+        if request.user.is_authenticated:
+            #test if user is attending or volunteering for the event
+            data = UserData.objects.get(user=request.user)
+            is_attending = Event.objects.filter(userattending__user=data, id=event_id).exists()
+            is_volunteering = Event.objects.filter(userdata__user=request.user).exists()
 
     except Event.DoesNotExist:
         raise Http404("Event does not exist")
