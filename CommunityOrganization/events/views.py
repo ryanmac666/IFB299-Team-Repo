@@ -6,8 +6,6 @@ from .models import Event
 from users.models import UserData, UserDonation, UserAttending
 from .utils import event_donation_total, event_donation_list, event_notify
 from django.contrib import messages
-from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse
 
 """
 Display all Events
@@ -201,20 +199,12 @@ def event_attendee_list_view(request, event_id):
 """
 Mark all user notifications as read
 """
-@csrf_exempt
 def event_mark_all_view(request):
-
-    mark_all = request.POST.get('view_all', False)
-
-    if mark_all:
-
+    #ensure request is a post request
+    if request.method == 'POST':
         request.user.notifications.unread().mark_all_as_read()
-        
-    else:
 
-        print("fuck:")
-
-    return HttpResponse('')
+    return redirect('/events/')
 
 
 

@@ -17,7 +17,7 @@
     <script src="{% static 'notifications/notify.js' %}" type="text/javascript"></script>
     {% register_notify_callbacks callbacks='fill_notification_list,fill_notification_badge' %}
 
-    <script type="text/javascript">
+    <!--<script type="text/javascript">
         $( document ).ready(function() {
             //generate a post request on link click
             $("#view_all").submit(function(e) {
@@ -36,7 +36,7 @@
                 });
             });
         });
-    </script>
+    </script>-->
 
 </head>
 <body>
@@ -86,7 +86,7 @@
                     <li>
                         <div class="dropdown">
                                 <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown">
-                                {% live_notify_badge %}
+                                {% notifications_unread %}
                                 <span class="caret"></span></button>
                             <ul class="dropdown-menu">
                                 <li class="dropdown-header">Recent</li>
@@ -105,7 +105,8 @@
                                 <li class="dropdown-header">More</li>
                                 <li><a href="{% url 'notifications:all' %}">View all</a></li>
                                 <li>
-                                    <form action="" method="post" id="view_all">
+                                    <form action="{% url 'event_mark_all_view' %}" method="post" id="view_all">
+                                        {% csrf_token %}
                                         <button class="btn btn-default" type="submit">Mark All as Read</button>
                                     </form>
                                 </li>
