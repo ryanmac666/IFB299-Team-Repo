@@ -27,10 +27,12 @@ Small comment here
 
 class UserDonation(models.Model):
     user = models.ForeignKey(UserData)
-    event = models.ForeignKey('events.Event')
+    event = models.ForeignKey('events.Event', related_name='donated_to')
     donation = models.DecimalField(max_digits=7, decimal_places=2, default=0.0)
 
-
+    def __str__(self):
+        return self.user.user.username + " Donated " + str(self.donation)
+    
 """
 UserAttending Table:
 
