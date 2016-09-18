@@ -27,7 +27,9 @@ def event_list_view(request):
     if query:
         event_list = event_list.filter(
             Q(event_name__icontains=query) |
-            Q(event_location__icontains=query)
+            Q(event_location__icontains=query) |
+            Q(start_date__year=query) |
+            Q(end_date__year=query)
         ).distinct()
         donation_list = event_donation_list(event_list)
         data_list = zip(event_list, donation_list)
@@ -86,12 +88,12 @@ def event_attend_view(request, event_id):
             user = UserData.objects.get(user=request.user)
             #make sure user is not already attending this event
             if UserAttending.objects.filter(user=user, event=event).exists():
-                raise Http404("already in event! p.s this is for debuging only. make a page!")
+                raise Http404("Already in event! p.s this is for debuging only. make a page!")
 
             else:
                 attendingUser = UserAttending(user=user, event=event, family=amount)
                 attendingUser.save()
-                event_notify(request, event, "you are attending", "is attending")
+                event_notify(request, event, "You are attending", "is attending")
 
         except Event.DoesNotExist:
             raise Http404("Event does not exist")
@@ -119,7 +121,7 @@ def event_donate_view(request, event_id):
 
             donation = UserDonation(user=user, event=event, donation=amount)
             donation.save()
-            event_notify(request, event, "you are donating to", "is donating to")
+            event_notify(request, event, "You are donating to", "is donating to")
 
         except Event.DoesNotExist:
             raise Http404("Event does not exist")
@@ -149,7 +151,7 @@ def event_volunteer_view(request, event_id):
                 user_voluntee = UserData.objects.get(user=request.user)
                 user_voluntee.events_volunteering.add(event)
                 user_voluntee.save()
-                event_notify(request, event, "you are volunteering for", "is volunteering for")
+                event_notify(request, event, "You are volunteering for", "is volunteering for")
 
         except Event.DoesNotExist:
             raise Http404("Event does not exist")
