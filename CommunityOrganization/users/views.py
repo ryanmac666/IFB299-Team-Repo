@@ -44,6 +44,7 @@ Allow users to create an account
 TODO: Ask for information such as first and last name
 """
 def user_signup_view(request):
+
     if request.method == 'POST':
         form = UserCreateForm(request.POST)
 
@@ -62,10 +63,9 @@ def user_signup_view(request):
                 return redirect('/events')
             else:
                 return redirect('/users/login')
-
-            # return user(request)
-
-    form = UserCreateForm()
+    else:
+        form = UserCreateForm()
+        
     context = {
         'form': form,
         'user': request.user,
