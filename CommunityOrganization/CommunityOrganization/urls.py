@@ -23,5 +23,5 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^events/', include('events.urls')),
     url(r'^users/', include('users.urls')),
-    url('^inbox/notifications/', include(notifications.urls, namespace='notifications')),
+    url(r'^inbox/notifications/', include(notifications.urls, namespace='notifications')),
 ]
