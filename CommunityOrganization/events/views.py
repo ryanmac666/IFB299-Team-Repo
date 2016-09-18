@@ -26,10 +26,10 @@ def event_list_view(request):
     query = request.GET.get("q")
     if query:
         event_list = event_list.filter(
+            Q(start_date__icontains=query) |
+            Q(end_date__icontains=query) |
             Q(event_name__icontains=query) |
-            Q(event_location__icontains=query) |
-            Q(start_date__year=query) |
-            Q(end_date__year=query)
+            Q(event_location__icontains=query)
         ).distinct()
         donation_list = event_donation_list(event_list)
         data_list = zip(event_list, donation_list)
