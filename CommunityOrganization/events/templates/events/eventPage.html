@@ -8,79 +8,94 @@
                 <ul class="list-group">
                     <li class="list-group-item"><h2 class="form-signin-heading">{{ event.event_name }}</h2></li>
                     <li class="list-group-item">
+                        <div class="btn-group" id="btn_forms">
+                            <!-- Attending -->
+                            <a href="#attend_dropdown" data-toggle="collapse" class="btn btn-default
+                            {# ensure user can not attend the same event twise #}
+                            {% if is_is_attending %}
+                                disabled
+                            {% endif %}
+                            ">Attend</a>
+                            <!-- Volunteer -->
+                            <a href="{% url 'event_volunteer_view' event.id %}" class="btn btn-default 
+                            {# ensure user can not voluntee at the same event twise #}
+                            {% if is_volunteering %}
+                                disabled
+                            {% endif %}
+                            ">Volunteer</a>
+                            <!-- Donate -->
+                            <a href="#donate_dropdown" data-toggle="collapse" class="btn btn-default">
+                                Donate
+                            </a>
+                            <!-- Volunteer List -->
+                            <a href="{% url 'event_volunteer_list_view' event.id %}" class="btn btn-default">
+                                Volunteer list
+                            </a>
+                            <!-- Attending List -->
+                            <a href="{% url 'event_attendee_list_view' event.id %}" class="btn btn-default">
+                                Attendee list
+                            </a>
+                        </div>
+                    </li>
+                    <!-- forms -->
+                    <div id="forms">
+                        <!-- Attend dropdown -->
+                        <div id="attend_dropdown" class="panel-collapse collapse">
+                            <li class="list-group-item active">
+                                <!-- Family Members Attending -->
+                                <form action="{% url 'event_attend_view' event.id %}" method="post" class="form">
+                                    {% csrf_token %}
+                                    <div class="input-group">
+                                        <input type="number" name="amount" class="form-control"
+                                               placeholder="Family members attending"><br>
+                                        <span class="input-group-btn">
+                                            <button type="submit" name="submit" class="btn btn-default">Confirm</button>
+                                        </span>
+                                    </div>
+                                </form>
+                            </li>
+                        </div>
+                        <!-- Donate dropdown -->
+                        <div id="donate_dropdown" class="panel-collapse collapse">
+                            <li class="list-group-item active">
+                                <!-- Donation Amount -->
+                                <form action="{% url 'event_donate_view' event.id %}" method="post" class="form">
+                                    {% csrf_token %}
+                                    <div class="input-group">
+                                        <input type="number" step="0.01" name="amount" class="form-control"
+                                               placeholder="Donation amount"><br>
+                                        <span class="input-group-btn">
+                                            <button type="submit" name="submit" class="btn btn-default">Confirm</button>
+                                        </span>
+                                    </div>
+                                </form>
+                            </li>
+                        </div>
+                    </div>
+                    <li class="list-group-item">
                         <ul class="list-group">
-                            <li class="list-group-item">{{ event.event_location }}</li>
-                            <li class="list-group-item">start: {{ event.start_date }}</li>
-                            <li class="list-group-item">end: {{ event.end_date }}</li>
-                            <li class="list-group-item">donation total: ${{ donation }}</li>
+                            <li class="list-group-item">
+                                <span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>&nbsp;
+                                {{ event.event_location }}
+                            </li>
+                            <li class="list-group-item">
+                                <span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>&nbsp;
+                                {{ event.start_date|date:"D d M" }} at {{ event.start_date|time:"h:i A" }} to
+
+                                {# display end date only if it differs from start date #}
+                                {% if event.end_date|date:"D d M" != event.start_date|date:"D d M" %}
+                                    {{ event.end_date|date:"D d M" }} at 
+                                {% endif %}
+
+                                {{ event.end_date|time:"h:i A" }}
+                            </li>
+                            <li class="list-group-item">
+                                <span class="glyphicon glyphicon-usd" aria-hidden="true"></span>&nbsp;
+                                {{ donation }} donated
+                            </li>
                         </ul>
                     </li>
                 </ul>
-            </div>
-        </div>
-
-        <div class="row">
-            <div class="col-md-6 col-md-offset-3">
-
-                {# disable field if already attending #}
-                {% if is_attending %}
-                    <fieldset disabled>
-                {% endif %}
-
-                <!-- Family Members Attending -->
-                <form action="{% url 'event_attend_view' event.id %}" method="post" class="form">
-                    {% csrf_token %}
-                    <div class="input-group">
-                        <input type="number" name="amount" class="form-control"
-                               placeholder="Family members attending"><br>
-                        <span class="input-group-btn">
-    					<button type="submit" name="submit" class="btn btn-default">Attend</button>
-    				</span>
-                    </div>
-                </form>
-
-                {% if is_attending %}
-                    </fieldset>
-                {% endif %}
-
-                <!-- Donation Amount -->
-                <form action="{% url 'event_donate_view' event.id %}" method="post" class="form">
-                    {% csrf_token %}
-                    <div class="input-group">
-                        <input type="number" step="0.01" name="amount" class="form-control"
-                               placeholder="Donation amount"><br>
-                        <span class="input-group-btn">
-					    <button type="submit" name="submit" class="btn btn-default">Donate</button>
-				    </span>
-                    </div>
-                </form>
-
-                &nbsp
-
-                {# disable field if already volunteering #}
-                {% if is_volunteering %}
-                    <fieldset disabled>
-                {% endif %}
-
-                <!-- Volunteer -->
-                <form action="{% url 'event_volunteer_view' event.id %}">
-                    <button type="submit" name="submit" class="btn btn-default">Volunteer</button>
-                </form>
-
-                {% if is_volunteering %}
-                    </fieldset>
-                {% endif %}
-
-                <!-- Volunteer List -->
-                <form action="{% url 'event_volunteer_list_view' event.id %}">
-                    <button type="submit" name="submit" class="btn btn-default">Volunteer list</button>
-                </form>
-
-                <!-- Attending List -->
-                <form action="{% url 'event_attendee_list_view' event.id %}">
-                    <button type="submit" name="submit" class="btn btn-default">Attending list</button>
-                </form>
-
             </div>
         </div>
     </div>
