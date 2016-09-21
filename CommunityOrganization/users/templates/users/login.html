@@ -5,16 +5,22 @@
 
 {% bootstrap_css %}
 
-
 {% block body %}
 	<div class="container">
-		<form action="/users/auth" method="post" class="form-signin">
-			{% csrf_token %}
-			<h2 class="form-signin-heading">Please sign in</h2>
-			<input type="text" name="username" class="form-control" placeholder="user name"><br>
-			<input type="password" name="password" class="form-control" placeholder="password"><br>
+		<form action="/users/login" method="post">
+		{% csrf_token %}
+
+			{% bootstrap_form_errors form %}
+			{% for field in form %}
+    			<div class="fieldWrapper">
+        			{% bootstrap_field field show_label=False show_help=False %}
+    			</div>
+			{% endfor %}
+	
 			Not a member? <a href="{% url 'user_signup_view' %}">Register.</a><br>
-			<button type="submit" value="Submit" class="btn btn-lg btn-primary btn-block">Login</button>
+		    {% buttons %}
+		        <button type="submit" class="btn btn-primary">Login</button>
+		    {% endbuttons %}
 		</form>
 	</div>
 {% endblock %}

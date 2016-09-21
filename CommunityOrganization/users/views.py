@@ -4,6 +4,8 @@ from django.contrib.auth.models import User
 from django.contrib import auth
 from django.core.mail import send_mail
 
+from django.contrib.auth.forms import AuthenticationForm
+
 from .forms import UserCreateForm
 from .models import UserData, UserDonation, UserAttending
 
@@ -71,7 +73,7 @@ def user_signup_view(request):
         form = UserCreateForm()
 
     notify_list = None
-    
+
     #ensure user is not anonymous when getting notifications
     if request.user.is_authenticated:
         notify_list = request.user.notifications.unread()[:5]
@@ -91,34 +93,29 @@ Allow users to login
 def user_login_view(request):
     notify_list = None
 
+    if request.method == 'POST':
+        form = AuthenticationForm(None, request.POST)
+
+        if form.is_valid():
+            login(request, form.get_user())
+
+            return redirect('/events')
+
+    else:
+        form = AuthenticationForm()
+
+
     #ensure user is not anonymous when getting notifications
     if request.user.is_authenticated:
         notify_list = request.user.notifications.unread()[:5]
 
     context = {
+        'form': form,
         'user': request.user,
         'notify_list': notify_list,
     }
 
     return render(request, 'users/login.html', context)
-
-
-"""
-Authenticate user login data for POST request
-"""
-def user_auth_view(request):
-    username = request.POST.get('username', '')
-    password = request.POST.get('password', '')
-    user = authenticate(username=username, password=password)
-
-    if user is not None:
-        login(request, user)
-
-        return redirect('/events')
-
-    else:
-
-        return redirect('/users/login')
 
 
 """
