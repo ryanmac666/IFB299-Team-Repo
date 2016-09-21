@@ -15,6 +15,7 @@ Display users attending and volunterring events
 TODO: Display user information
 """
 def user_view(request):
+    #ensure user is loged in
     if not request.user.is_authenticated:
         return redirect('/users/login')
 
@@ -30,10 +31,13 @@ def user_view(request):
         volunteering_donation_list = event_donation_list(volunteering_list)
         volunteering_data = zip(volunteering_list, volunteering_donation_list)
 
+        notify_list = request.user.notifications.unread()[:5]
+
         context = {
             'attending_data': attending_data,
             'volunteering_data': volunteering_data,
             'user': request.user,
+            'notify_list': notify_list,
         }
 
         return render(request, 'users/users.html', context)
@@ -65,10 +69,17 @@ def user_signup_view(request):
                 return redirect('/users/login')
     else:
         form = UserCreateForm()
+
+    notify_list = None
+    
+    #ensure user is not anonymous when getting notifications
+    if request.user.is_authenticated:
+        notify_list = request.user.notifications.unread()[:5]
         
     context = {
         'form': form,
         'user': request.user,
+        'notify_list': notify_list,
     }
 
     return render(request, 'users/signup.html', context)
@@ -78,8 +89,15 @@ def user_signup_view(request):
 Allow users to login
 """
 def user_login_view(request):
+    notify_list = None
+
+    #ensure user is not anonymous when getting notifications
+    if request.user.is_authenticated:
+        notify_list = request.user.notifications.unread()[:5]
+
     context = {
         'user': request.user,
+        'notify_list': notify_list,
     }
 
     return render(request, 'users/login.html', context)

@@ -16,10 +16,12 @@ def event_list_view(request):
     donation_list = event_donation_list(event_list)
     data_list = zip(event_list, donation_list)
     notify_list = None
+    notify_unread = None
 
-    #ensure user is not anonymous
+    #ensure user is not anonymous when getting notifications
     if request.user.is_authenticated:
         notify_list = request.user.notifications.unread()[:5]
+
 
 
     # SEARCH FUNCTION
@@ -52,6 +54,8 @@ def event_view(request, event_id):
         donation = event_donation_total(event)
         is_attending = None
         is_volunteering = None
+        notify_list = None
+        notify_unread = None
 
         #ensure user is not anonymous
         if request.user.is_authenticated:
@@ -59,6 +63,8 @@ def event_view(request, event_id):
             data = UserData.objects.get(user=request.user)
             is_attending = Event.objects.filter(userattending__user=data, id=event_id).exists()
             is_volunteering = Event.objects.filter(userdata__user=request.user).exists()
+            #get notifications
+            notify_list = request.user.notifications.unread()[:5]
 
     except Event.DoesNotExist:
         raise Http404("Event does not exist")
@@ -69,6 +75,7 @@ def event_view(request, event_id):
         'user': request.user,
         'is_attending': is_attending,
         'is_volunteering': is_volunteering,
+        'notify_list': notify_list,
     }
 
     return render(request, 'events/eventPage.html', context)
@@ -167,15 +174,18 @@ def event_volunteer_list_view(request, event_id):
     #get event specified in url
     try:
         volunteers = User.objects.filter(userdata__events_volunteering__id=event_id)
-        # Testing
-        messages.success(request, 'Hello world.')
 
     except Event.DoesNotExist:
         raise Http404("Event does not exist")
 
+    #ensure user is not anonymous when getting notifications
+    if request.user.is_authenticated:
+        notify_list = request.user.notifications.unread()[:5]
+
     context = {
         'user_list': volunteers,
         'user': request.user,
+        'notify_list': notify_list,
     }
 
     return render(request, 'events/eventUsers.html', context)
@@ -191,9 +201,14 @@ def event_attendee_list_view(request, event_id):
     except Event.DoesNotExist:
         raise Http404("Event does not exist")
 
+    #ensure user is not anonymous when getting notifications
+    if request.user.is_authenticated:
+        notify_list = request.user.notifications.unread()[:5]
+
     context = {
         'user_list': attending,
         'user': request.user,
+        'notify_list': notify_list,
     }
 
     return render(request, 'events/eventUsers.html', context)
