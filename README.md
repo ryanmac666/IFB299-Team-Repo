@@ -25,3 +25,7 @@ Django should start a server at localhost on port 8000
 ```shell
 http://127.0.0.1:8000/
 ```
+or
+```shell
+http://localhost:8000/
+```
