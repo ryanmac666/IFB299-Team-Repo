@@ -17,7 +17,11 @@ Next the servers dependencies need to be install. This can be done using the fol
 pip install django-bootstrap3
 pip install django-notifications-hq
 ```
-Now with the dependences installed the django server can be run from the CommunityOrganization folder by run the following command
+Now with the dependences installed the django server can be started from the CommunityOrganization folder by running the following command
 ```shell
 python manage.py runserver
+```
+Django should start a server at
+```shell
+http://127.0.0.1:8000/
 ```
