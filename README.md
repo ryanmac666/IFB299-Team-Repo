@@ -21,7 +21,7 @@ Now with the dependences installed the django server can be started from the Com
 ```shell
 python manage.py runserver
 ```
-Django should start a server at
+Django should start a server at localhost on port 8000
 ```shell
 http://127.0.0.1:8000/
 ```
