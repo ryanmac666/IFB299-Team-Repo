@@ -10,5 +10,6 @@ urlpatterns = [
     url(r'^(?P<event_id>[0-9]+)/volunteer/$', views.event_volunteer_view, name='event_volunteer_view'),
     url(r'^(?P<event_id>[0-9]+)/attending/$', views.event_volunteer_list_view, name='event_volunteer_list_view'),
     url(r'^(?P<event_id>[0-9]+)/volunteering/$', views.event_attendee_list_view, name='event_attendee_list_view'),
+    url(r'^(?P<event_id>[0-9]+)/event_notify_donations/$', views.event_notify_donations_view, name='event_notify_donations_view'),
     url(r'^mark_all_as_read/$', views.event_mark_all_view, name='event_mark_all_view'),
 ]

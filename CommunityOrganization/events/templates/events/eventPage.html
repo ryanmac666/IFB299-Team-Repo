@@ -35,6 +35,12 @@
                             <a href="{% url 'event_attendee_list_view' event.id %}" class="btn btn-default">
                                 Attendee list
                             </a>
+                            {% if user.is_superuser %}
+                            <!-- Call for donations -->
+                            <a href="{% url 'event_notify_donations_view' event.id %}" class="btn btn-default">
+                                Call for donations
+                            </a>
+                            {% endif %}
                         </div>
                     </li>
                     <!-- forms -->
@@ -91,7 +97,23 @@
                             </li>
                             <li class="list-group-item">
                                 <span class="glyphicon glyphicon-usd" aria-hidden="true"></span>&nbsp;
-                                {{ donation }} donated
+                                {{ donation }} donated out of {{ event.event_cost }} event cost
+                            </li>
+                            <li class="list-group-item">
+                                <span class="glyphicon glyphicon-tag" aria-hidden="true"></span>&nbsp;
+                                {% if ticket == 0 %}
+                                    no charge for tickets 
+                                {% else %}
+                                    {{ ticket }} estimated cost per ticket
+                                {% endif %}
+                            </li>
+                            <li class="list-group-item">
+                                {% if user.is_superuser %}
+                                <!-- Edit Event -->
+                                <a href="{{ admin_url }}" class="btn btn-danger">
+                                    Edit
+                                </a>
+                                {% endif %}
                             </li>
                         </ul>
                     </li>
