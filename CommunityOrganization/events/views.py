@@ -6,6 +6,7 @@ from .models import Event
 from users.models import UserData, UserDonation, UserAttending
 from .utils import event_donation_total, event_donation_list, event_notify
 from django.contrib import messages
+from notifications.signals import notify
 
 """
 Display all Events
@@ -52,6 +53,19 @@ def event_view(request, event_id):
     try:
         event = Event.objects.get(id=event_id)
         donation = event_donation_total(event)
+
+        #create a list of family member numbers based on informaion in the attendee database
+        num_attending = [(i.family+1) for i in UserAttending.objects.filter(event=event)]
+        #get grand total of all attendees (including family members)
+        num_attending = sum(num_attending)
+        
+        #use estemated interrest if users attending it too low for accurate price estimation
+        if event.event_estemated_interrest > num_attending:
+            num_attending = event.event_estemated_interrest
+
+        #estemate ticket cost based on current donations and attending members
+        ticket = (event.event_cost - donation) / num_attending
+
         is_attending = None
         is_volunteering = None
         notify_list = None
@@ -76,6 +90,8 @@ def event_view(request, event_id):
         'is_attending': is_attending,
         'is_volunteering': is_volunteering,
         'notify_list': notify_list,
+        'ticket': "{0:.2f}".format(ticket),
+        'admin_url': event.get_admin_url(),
     }
 
     return render(request, 'events/eventPage.html', context)
@@ -172,7 +188,10 @@ Display a list of all volunteers
 """
 def event_volunteer_list_view(request, event_id):
     notify_list = None
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
     #get event specified in url
     try:
         volunteers = User.objects.filter(userdata__events_volunteering__id=event_id)
@@ -197,7 +216,10 @@ Display a list of all attendees
 """
 def event_attendee_list_view(request, event_id):
     notify_list = None
+<<<<<<< HEAD
 
+=======
+>>>>>>> master
     try:
         attending = User.objects.filter(userdata__userattending__event__id=event_id)
 
@@ -215,6 +237,14 @@ def event_attendee_list_view(request, event_id):
     }
 
     return render(request, 'events/eventUsers.html', context)
+
+"""
+Send a notification to all members to donate the an event
+"""
+def event_notify_donations_view(request, event_id):
+    notify.send(request.user, recipient=request.user, verb='is requesting donations for event: ', target=Event.objects.get(id=event_id))
+
+    return redirect('/events/'+event_id)
 
 """
 Mark all user notifications as read
