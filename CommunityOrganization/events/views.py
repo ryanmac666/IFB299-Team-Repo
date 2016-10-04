@@ -188,10 +188,6 @@ Display a list of all volunteers
 """
 def event_volunteer_list_view(request, event_id):
     notify_list = None
-<<<<<<< HEAD
-
-=======
->>>>>>> master
     #get event specified in url
     try:
         volunteers = User.objects.filter(userdata__events_volunteering__id=event_id)
@@ -216,10 +212,7 @@ Display a list of all attendees
 """
 def event_attendee_list_view(request, event_id):
     notify_list = None
-<<<<<<< HEAD
-
-=======
->>>>>>> master
+    #get event specified in url
     try:
         attending = User.objects.filter(userdata__userattending__event__id=event_id)
 
