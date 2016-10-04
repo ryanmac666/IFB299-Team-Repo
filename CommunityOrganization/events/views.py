@@ -64,7 +64,8 @@ def event_view(request, event_id):
             num_attending = event.event_estemated_interrest
 
         #estemate ticket cost based on current donations and attending members
-        ticket = (event.event_cost - donation) / num_attending
+        #also ensure number isn't negative
+        ticket = max(0,(event.event_cost - donation) / num_attending)
 
         is_attending = None
         is_volunteering = None
