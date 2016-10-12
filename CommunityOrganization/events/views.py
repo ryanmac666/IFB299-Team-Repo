@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from django.db.models import Q
 from .models import Event
+from .forms import EventCreateForm
 from users.models import UserData, UserDonation, UserAttending
 from .utils import event_donation_total, event_donation_list, event_notify
 from django.contrib import messages
@@ -236,9 +237,50 @@ def event_attendee_list_view(request, event_id):
 Send a notification to all members to donate the an event
 """
 def event_notify_donations_view(request, event_id):
-    notify.send(request.user, recipient=request.user, verb='is requesting donations for event: ', target=Event.objects.get(id=event_id))
+    notify.send(request.user, recipient=request.user, verb="/events/" + event_id, description='Requesting donations for event: ' + Event.objects.get(id=event_id).event_name)
 
     return redirect('/events/'+event_id)
+
+"""
+Serve a event creation form and handle event creation requests
+"""
+def event_create_view(request):
+
+    #ensure user is an admin when creating events
+    if not request.user.is_superuser:
+        return redirect('/events')
+
+    if request.method == 'POST':
+        form = EventCreateForm(request.POST)
+
+        if form.is_valid():
+            event = form.save()
+            send_mail(
+                'Registration successful',
+                'Thanks for registering',
+                'ifb299dummyemail@gmail.com',
+                ['ifb299dummyemail@gmail.com'],
+                fail_silently=False,
+            )
+
+            return redirect('/events')
+
+    else:
+        form = EventCreateForm()
+
+    notify_list = None
+
+    #ensure user is not anonymous when getting notifications
+    if request.user.is_authenticated:
+        notify_list = request.user.notifications.unread()[:5]
+        
+    context = {
+        'form': form,
+        'user': request.user,
+        'notify_list': notify_list,
+    }
+
+    return render(request, 'events/eventCreate.html', context)
 
 """
 Mark all user notifications as read

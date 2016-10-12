@@ -96,11 +96,18 @@
                             <li class="dropdown-header">Recent</li>
                             {% if notify_list %}
                                 {% for notify in notify_list %}
-                                    <li><a href="#">
-                                        {{ notify.actor }}
-                                        {{ notify.verb }}
-                                        {{ notify.target }}
-                                    </a></li>
+                                    {# description var is used to inject custom html #}
+                                    {% if notify.description %}
+                                        <li><a href="{{ notify.verb }}">
+                                            {{ notify.description }}
+                                        </a></li>
+                                    {% else %}
+                                        <li><a href="#">
+                                            {{ notify.actor }}
+                                            {{ notify.verb }}
+                                            {{ notify.target }}
+                                        </a></li>
+                                    {% endif %}
                                 {% endfor %}
                             {% else %}
                                 <li><a href="#">No notifications</a></li>

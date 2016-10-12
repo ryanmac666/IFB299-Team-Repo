@@ -7,7 +7,7 @@
 
 {% block body %}
 	<div class="container">
-		<form action="/users/login" method="post">
+		<form action="{% url 'user_login_view' %}" method="post">
 		{% csrf_token %}
 
 			{% bootstrap_form_errors form %}

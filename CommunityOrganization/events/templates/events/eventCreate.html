@@ -7,20 +7,16 @@
 
 {% block body %}
 	<div class="container">
-		<form action="{% url 'user_signup_view' %}" method="post">
+		<form action="{% url 'event_create_view' %}" method="post">
 		{% csrf_token %}
 
+			{% bootstrap_form_errors form %}
 			{% for field in form %}
     			<div class="fieldWrapper">
-        			{% bootstrap_form_errors form %}
         			{% bootstrap_field field show_label=False show_help=False %}
     			</div>
 			{% endfor %}
-	
-			Already a member? <a href="{% url 'user_login_view' %}">Login.</a><br>
-		    {% buttons %}
-		        <button type="submit" class="btn btn-primary">Signup</button>
-		    {% endbuttons %}
+		        <button type="submit" class="btn btn-primary">Create</button>
 		</form>
 	</div>
 {% endblock %}
