@@ -26,13 +26,14 @@ class Event(models.Model):
         info = (self._meta.app_label, self._meta.model_name)
         return reverse('admin:%s_%s_change' % info, args=(self.pk,))
 
-    def save(self, *args, **kwargs):
+    """def save(self, *args, **kwargs):
 
         super().save()
 
         #notify all users of event creation
         for user in list(User.objects.all()):
             notify.send(User.objects.get(username="BOT"), recipient=user, verb="/events/" + str(self.id), description='New event planed: ' + self.event_name)
+    """
 
     def delete(self, *args, **kwargs):
 
