@@ -108,6 +108,16 @@
                                 {% endif %}
                             </li>
                             {% if user.is_superuser %}
+							<li class="list-group-item">
+                                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;
+                                {% if expected_attendance == 0 %}
+                                    no registered interest 
+                                {% elif registered_attendance < expected_attendance %}
+                                    {{ registered_attendance }} registered of {{ expected_attendance }} expected
+								{% else %}
+									{{ registered_attendance }} registered
+                                {% endif %}
+                            </li>
                             <li class="list-group-item">
                                 <!-- Edit Event -->
                                 <a href="{{ admin_url }}" class="btn btn-danger">

@@ -56,10 +56,11 @@ def event_view(request, event_id):
         donation = event_donation_total(event)
 
         #create a list of family member numbers based on informaion in the attendee database
-        num_attending = [(i.family+1) for i in UserAttending.objects.filter(event=event)]
+        registered_attending = [(i.family+1) for i in UserAttending.objects.filter(event=event)]
         #get grand total of all attendees (including family members)
-        num_attending = sum(num_attending)
-        
+        registered_attending = sum(registered_attending)
+
+        num_attending = registered_attending
         #use estemated interrest if users attending it too low for accurate price estimation
         if event.event_estemated_interrest > num_attending:
             num_attending = event.event_estemated_interrest
@@ -92,6 +93,8 @@ def event_view(request, event_id):
         'is_attending': is_attending,
         'is_volunteering': is_volunteering,
         'notify_list': notify_list,
+        'registered_attendance': registered_attending,
+        'expected_attendance': num_attending,
         'ticket': "{0:.2f}".format(ticket),
         'admin_url': event.get_admin_url(),
     }
