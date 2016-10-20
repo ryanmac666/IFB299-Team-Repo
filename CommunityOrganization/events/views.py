@@ -14,7 +14,8 @@ Display all Events
 TODO: don't display past events
 """
 def event_list_view(request):
-    
+    if not request.user.is_authenticated:
+        return redirect('/users/login/')
         
     event_list = Event.objects.order_by('-start_date')
     donation_list = event_donation_list(event_list)
