@@ -5,7 +5,7 @@ from django.db.models import Q
 from .models import Event
 from .forms import EventCreateForm
 from users.models import UserData, UserDonation, UserAttending
-from .utils import event_donation_total, event_donation_list, event_notify
+from .utils import event_user_donation_list, event_user_donation_total, event_donation_total, event_donation_list, event_notify
 from django.contrib import messages
 from notifications.signals import notify
 
@@ -14,9 +14,15 @@ Display all Events
 TODO: don't display past events
 """
 def event_list_view(request):
+    
+        
     event_list = Event.objects.order_by('-start_date')
     donation_list = event_donation_list(event_list)
-    data_list = zip(event_list, donation_list)
+
+    user_data = UserData.objects.get(user=request.user)
+    user_donation_list = event_user_donation_list(event_list, user_data)
+
+    data_list = zip(event_list, donation_list, user_donation_list)
     notify_list = None
     notify_unread = None
 
@@ -36,7 +42,7 @@ def event_list_view(request):
             Q(event_location__icontains=query)
         ).distinct()
         donation_list = event_donation_list(event_list)
-        data_list = zip(event_list, donation_list)
+        data_list = zip(event_list, donation_list, user_donation_list)
 
     context = {
         'data_list': data_list,
@@ -54,6 +60,12 @@ def event_view(request, event_id):
     try:
         event = Event.objects.get(id=event_id)
         donation = event_donation_total(event)
+        user_data = UserData.objects.get(user=request.user)
+    
+        if request.user.is_authenticated:
+            user_donations = event_user_donation_total(event_list, user_data)
+        else:
+            user_donations = 0
 
         #create a list of family member numbers based on informaion in the attendee database
         registered_attending = [(i.family+1) for i in UserAttending.objects.filter(event=event)]
@@ -89,6 +101,7 @@ def event_view(request, event_id):
     context = {
         'event': event,
         'donation': donation,
+        'user_donations': user_donations,
         'user': request.user,
         'is_attending': is_attending,
         'is_volunteering': is_volunteering,

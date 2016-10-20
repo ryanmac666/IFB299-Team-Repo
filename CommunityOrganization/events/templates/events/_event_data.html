@@ -1,5 +1,5 @@
 {% if data_list %}
-    {% for event, donation in data_list %}
+    {% for event, donation, user_donations in data_list %}
         <div class="col-sm-4 col-lg-4">
             <div class="thumbnail">
                 <div class="caption">
@@ -11,6 +11,9 @@
                         <li class="list-group-item"><b>Start:</b> {{ event.start_date }}</li>
                         <li class="list-group-item"><b>End:</b> {{ event.end_date }}</li>
                         <li class="list-group-item"><b>Total donations:</b> ${{ donation }}</li>
+                        {% if user.is_authenticated %}
+                            <li class="list-group-item"><b>my donations:</b> ${{ user_donations }}</li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>

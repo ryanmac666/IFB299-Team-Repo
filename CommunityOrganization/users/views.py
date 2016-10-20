@@ -10,7 +10,7 @@ from .forms import UserCreateForm
 from .models import UserData, UserDonation, UserAttending
 
 from events.models import Event
-from events.utils import event_donation_list
+from events.utils import event_donation_list, event_user_donation_total, event_user_donation_list
 
 """
 Display users attending and volunterring events
@@ -27,11 +27,13 @@ def user_view(request):
 
         attending_list = Event.objects.filter(userattending__user=data)
         attending_donation_list = event_donation_list(attending_list)
-        attending_data = zip(attending_list, attending_donation_list)
+        user_attending_donation_list = event_user_donation_list(attending_list, data)
+        attending_data = zip(attending_list, attending_donation_list, user_attending_donation_list)
 
         volunteering_list = Event.objects.filter(userdata__user=request.user)
         volunteering_donation_list = event_donation_list(volunteering_list)
-        volunteering_data = zip(volunteering_list, volunteering_donation_list)
+        user_volunteering_donation_list = event_user_donation_list(volunteering_list, data)
+        volunteering_data = zip(volunteering_list, volunteering_donation_list, user_volunteering_donation_list)
 
         notify_list = request.user.notifications.unread()[:5]
 
