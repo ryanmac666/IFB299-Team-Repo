@@ -7,6 +7,7 @@ from .forms import EventCreateForm
 from users.models import UserData, UserDonation, UserAttending
 from .utils import event_user_donation_list, event_user_donation_total, event_donation_total, event_donation_list, event_notify
 from django.contrib import messages
+from django.core.mail import send_mail
 from notifications.signals import notify
 
 """
@@ -64,7 +65,7 @@ def event_view(request, event_id):
         user_data = UserData.objects.get(user=request.user)
     
         if request.user.is_authenticated:
-            user_donations = event_user_donation_total(event_list, user_data)
+            user_donations = event_user_donation_total(event, user_data)
         else:
             user_donations = 0
 
