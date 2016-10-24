@@ -1,0 +1,48 @@
+{% extends 'events/base.html' %}
+{% block event_list_active %}active{% endblock %}
+
+{% load bootstrap3 %}
+
+{% bootstrap_css %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <h1>
+                    Community Organisation
+                </h1>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <h2>
+                    This is a website for the community to organize events.
+                </h2>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3">
+                <img src="../../static/images/community-img.jpg" alt="Community" style="width:500px;height:500px;">
+
+            </div>
+        </div>
+{#		<form action="{% url 'user_login_view' %}" method="post">#}
+{#		{% csrf_token %}#}
+{##}
+{#			{% bootstrap_form_errors form %}#}
+{#			{% for field in form %}#}
+{#    			<div class="fieldWrapper">#}
+{#        			{% bootstrap_field field show_label=False show_help=False %}#}
+{#    			</div>#}
+{#			{% endfor %}#}
+{#	#}
+{#			Not a member? <a href="{% url 'user_signup_view' %}">Register.</a><br>#}
+{#		    {% buttons %}#}
+{#		        <button type="submit" class="btn btn-primary">Login</button>#}
+{#		    {% endbuttons %}#}
+{#		</form>#}
+	</div>
+{% endblock %}

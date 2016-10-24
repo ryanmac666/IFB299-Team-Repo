@@ -127,3 +127,10 @@ def user_logout_view(request):
     logout(request)
 
     return redirect('/users/login')
+
+
+"""
+View Splash Page
+"""
+def user_splash_view(request):
+    return render(request, 'users/splash.html')
