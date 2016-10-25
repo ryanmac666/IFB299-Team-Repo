@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 from .models import Event
 from users.models import UserData, UserDonation, UserAttending
-from .utils import event_user_donation_list, event_user_donation_total, event_donation_total, event_donation_list, event_notify, event_user_family, event_attendee_donation_list, donation_total
+from .utils import event_user_donation_list, event_user_donation_total, event_donation_total, event_donation_list, event_notify, event_user_family, event_attendee_donation_list, donation_total, event_big_donationers, big_donationer
 from django.contrib import messages
 from django.core.mail import send_mail
 from notifications.signals import notify
@@ -76,7 +76,10 @@ def event_view(request, event_id):
 
         #estemate ticket cost based on current donations and attending members
         #also ensure number isn't negative
-        ticket = max(0,(event.event_cost - donation) / num_attending)
+        if not event.honor_event:
+            ticket = max(0,(event.event_cost - donation) / num_attending)
+        else: #change calculation for honor events to spread cost to all users
+            ticket = max(0,(event.event_cost - donation) / (UserData.objects.all().count() - event_big_donationers(UserData.objects.all())))
 
         is_attending = None
         is_volunteering = None
@@ -89,6 +92,7 @@ def event_view(request, event_id):
             data = UserData.objects.get(user=request.user)
             is_attending = Event.objects.filter(userattending__user=data, id=event_id).exists()
             is_volunteering = UserData.objects.filter(user=request.user, events_volunteering__id=event_id).exists()
+            is_big_donationer = big_donationer(data)
             user_donations = donation_total(data)
             #get notifications
             notify_list = request.user.notifications.unread()[:5]
@@ -103,6 +107,7 @@ def event_view(request, event_id):
         'user': request.user,
         'is_attending': is_attending,
         'is_volunteering': is_volunteering,
+        'is_big_donationer': is_big_donationer,
         'notify_list': notify_list,
         'registered_attendance': registered_attending,
         'expected_attendance': num_attending,

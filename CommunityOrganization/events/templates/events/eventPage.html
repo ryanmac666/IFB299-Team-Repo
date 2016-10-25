@@ -10,11 +10,14 @@
                     <li class="list-group-item">
                         <div class="btn-group" id="btn_forms">
                             <!-- Attending -->
-                            {# allow the user to cancel attending #}
-                            {% if not is_attending %}
-                            <a href="#attend_dropdown" data-toggle="collapse" class="btn btn-default">Attend</a>
-                            {% else %}
-                            <a href="{% url 'event_attend_view' event.id 2 %}" class="btn btn-default">Cancel Attending</a>
+                            {# you can't cancel a honor event it's mandatory #}
+                            {% if not event.honor_event %}
+                                {# allow the user to cancel attending #}
+                                {% if not is_attending %}
+                                <a href="#attend_dropdown" data-toggle="collapse" class="btn btn-default">Attend</a>
+                                {% else %}
+                                <a href="{% url 'event_attend_view' event.id 2 %}" class="btn btn-default">Cancel Attending</a>
+                                {% endif %}
                             {% endif %}
                             <!-- Volunteer -->
                             {# allow the user to cancel volunteering #}
@@ -101,8 +104,16 @@
                             </li>
                             <li class="list-group-item">
                                 <span class="glyphicon glyphicon-tag" aria-hidden="true"></span>&nbsp;
-                                {% if event.honor_event and user_donations >= 3000 %}
-                                    no charge, you are an honored guest
+                                {% if event.honor_event %}
+                                    {% if user_donations >= 3000 %}
+                                        no charge, you are an honored guest
+                                    {% elif is_big_donationer %}
+                                        not charge, you donated more than $500 in a single donation this year
+                                    {% elif ticket == "0.00" %}
+                                        no charge for tickets 
+                                    {% else %}
+                                        {{ ticket }} estimated cost per ticket
+                                    {% endif %}
                                 {% else %}
                                     {% if ticket == "0.00" %}
                                         no charge for tickets 

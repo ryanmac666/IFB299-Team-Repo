@@ -30,6 +30,17 @@ def donation_total(user):
 	return donationed
 
 """
+check if user is a big donater (donated more than $500 in a single donation)
+"""
+def big_donationer(user):
+
+	for donation in UserDonation.objects.filter(user=user):
+		if donation.donation >= 500:
+			return True;
+
+	return False;
+
+"""
 Calculate total donation amounts for a list of events
 """
 def event_donation_list(event_list):
@@ -73,6 +84,19 @@ def event_user_family(event, attending):
 		family_list.append(UserAttending.objects.get(user=user, event=event).family)
 
 	return family_list
+
+"""
+Return the count of people who have donated more than $500 on a single event or who are honor members
+"""
+def event_big_donationers(user_data):
+
+	count = 0
+
+	for user in user_data:
+		if donation_total(user) >= 5000 or big_donationer(user):
+			count += 1
+
+	return count
 
 """
 Notify the user and committee members
