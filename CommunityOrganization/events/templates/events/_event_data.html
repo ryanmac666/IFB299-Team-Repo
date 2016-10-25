@@ -3,16 +3,34 @@
         <div class="col-sm-4 col-lg-4">
             <div class="thumbnail">
                 <div class="caption">
-                    <h2 class="form-signin-heading"><a href="{% url 'event_view' event.id %}">{{ event.event_name }}</a></h2>
+                    <h2 class="form-signin-heading">
+                    <a href="{% url 'event_view' event.id %}">
+                        {{ event.event_name }}
+                    </a>
+                    {% if event.honor_event %}
+                        <span class="glyphicon glyphicon-star" aria-hidden="true"></span>&nbsp;
+                    {% endif %}
+                    </h2>
 
                     <!-- View Details -->
                     <ul class="list-group">
-                        <li class="list-group-item"><b>{{ event.event_location }}</b></li>
-                        <li class="list-group-item"><b>Start:</b> {{ event.start_date }}</li>
-                        <li class="list-group-item"><b>End:</b> {{ event.end_date }}</li>
-                        <li class="list-group-item"><b>Total donations:</b> ${{ donation }}</li>
+                        <li class="list-group-item"><b><span class="glyphicon glyphicon-map-marker" aria-hidden="true"></span>&nbsp;
+                        {{ event.event_location }}</b></li>
+                        <li class="list-group-item"><span class="glyphicon glyphicon-calendar" aria-hidden="true"></span>&nbsp;
+                            {{ event.start_date|date:"D d M" }} at {{ event.start_date|time:"h:i A" }} to
+
+                            {# display end date only if it differs from start date #}
+                            {% if event.end_date|date:"D d M" != event.start_date|date:"D d M" %}
+                                {{ event.end_date|date:"D d M" }} at 
+                            {% endif %}
+
+                            {{ event.end_date|time:"h:i A" }}
+                        </li>
+                        <li class="list-group-item"><span class="glyphicon glyphicon-usd" aria-hidden="true"></span>&nbsp;
+                        {{ donation }} total donations</li>
                         {% if user.is_authenticated %}
-                            <li class="list-group-item"><b>my donations:</b> ${{ user_donations }}</li>
+                            <li class="list-group-item"><span class="glyphicon glyphicon-usd" aria-hidden="true"></span>&nbsp;
+                            {{ user_donations }} contributed</li>
                         {% endif %}
                     </ul>
                 </div>

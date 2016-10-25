@@ -22,6 +22,13 @@ def event_user_donation_total(event, user):
 
         return donations
 
+def donation_total(user):
+	donationed = 0
+	for donation in UserDonation.objects.filter(user=user):
+		donationed += donation.donation
+
+	return donationed
+
 """
 Calculate total donation amounts for a list of events
 """

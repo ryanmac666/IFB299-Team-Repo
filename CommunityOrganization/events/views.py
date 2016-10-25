@@ -5,7 +5,7 @@ from django.db.models import Q
 from .models import Event
 from .forms import EventCreateForm
 from users.models import UserData, UserDonation, UserAttending
-from .utils import event_user_donation_list, event_user_donation_total, event_donation_total, event_donation_list, event_notify, event_user_family, event_attendee_donation_list
+from .utils import event_user_donation_list, event_user_donation_total, event_donation_total, event_donation_list, event_notify, event_user_family, event_attendee_donation_list, donation_total
 from django.contrib import messages
 from django.core.mail import send_mail
 from notifications.signals import notify
@@ -63,11 +63,7 @@ def event_view(request, event_id):
         event = Event.objects.get(id=event_id)
         donation = event_donation_total(event)
         user_data = UserData.objects.get(user=request.user)
-    
-        if request.user.is_authenticated:
-            user_donations = event_user_donation_total(event, user_data)
-        else:
-            user_donations = 0
+        user_donations = 0
 
         #create a list of family member numbers based on informaion in the attendee database
         registered_attending = [(i.family+1) for i in UserAttending.objects.filter(event=event)]
@@ -93,7 +89,8 @@ def event_view(request, event_id):
             #test if user is attending or volunteering for the event
             data = UserData.objects.get(user=request.user)
             is_attending = Event.objects.filter(userattending__user=data, id=event_id).exists()
-            is_volunteering = Event.objects.filter(userdata__user=request.user).exists()
+            is_volunteering = Event.objects.filter(userattending__user=data, id=event_id).exists()
+            user_donations = donation_total(data)
             #get notifications
             notify_list = request.user.notifications.unread()[:5]
 

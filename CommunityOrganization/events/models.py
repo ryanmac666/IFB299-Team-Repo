@@ -13,6 +13,7 @@ class Event(models.Model):
     event_estemated_interrest = models.IntegerField(default=100)
     start_date = models.DateTimeField('start date')
     end_date = models.DateTimeField('end date')
+    honor_event = models.BooleanField(default=False);
 
     def __str__(self):
         return self.event_name
@@ -25,21 +26,5 @@ class Event(models.Model):
     def get_admin_url(self):
         info = (self._meta.app_label, self._meta.model_name)
         return reverse('admin:%s_%s_change' % info, args=(self.pk,))
-
-    def save(self, *args, **kwargs):
-
-        super().save()
-
-        #notify all users of event creation
-        for user in list(User.objects.all()):
-            notify.send(User.objects.get(username="BOT"), recipient=user, verb="/events/" + str(self.id), description='New event planed: ' + self.event_name)
-
-    def delete(self, *args, **kwargs):
-
-        #notify all attending users of event cancellation
-        for user in list(User.objects.all()):
-            notify.send(User.objects.get(username="BOT"), recipient=user, verb="#" + str(self.id), description='Event Cancellation: ' + self.event_name)
-
-        super().delete()
 
 

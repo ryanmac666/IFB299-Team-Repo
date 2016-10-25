@@ -101,10 +101,14 @@
                             </li>
                             <li class="list-group-item">
                                 <span class="glyphicon glyphicon-tag" aria-hidden="true"></span>&nbsp;
-                                {% if ticket == "0.00" %}
-                                    no charge for tickets 
+                                {% if event.honor_event and user_donations >= 3000 %}
+                                    no charge, you are an honored guest
                                 {% else %}
-                                    {{ ticket }} estimated cost per ticket
+                                    {% if ticket == "0.00" %}
+                                        no charge for tickets 
+                                    {% else %}
+                                        {{ ticket }} estimated cost per ticket
+                                    {% endif %}
                                 {% endif %}
                             </li>
                             {% if user.is_superuser %}
