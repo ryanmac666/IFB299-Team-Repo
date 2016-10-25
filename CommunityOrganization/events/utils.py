@@ -1,5 +1,5 @@
 from .models import Event
-from users.models import UserDonation
+from users.models import UserData, UserDonation, UserAttending
 from notifications.signals import notify
 from django.contrib.auth.models import User
 
@@ -44,6 +44,28 @@ def event_user_donation_list(event_list, user):
 		donations_list.append(event_user_donation_total(event, user))
 
 	return donations_list
+
+def event_attendee_donation_list(event, user_list):
+
+	donations_list = [];
+
+
+	for user in user_list:
+		donations_list.append(event_user_donation_total(event, user))
+
+	return donations_list
+
+"""
+Get a list of family members attending for all attending members
+"""
+def event_user_family(event, attending):
+
+	family_list = []
+
+	for user in attending:
+		family_list.append(UserAttending.objects.get(user=user, event=event).family)
+
+	return family_list
 
 """
 Notify the user and committee members

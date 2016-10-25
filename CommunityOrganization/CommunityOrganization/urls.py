@@ -19,7 +19,7 @@ from django.views.generic.base import RedirectView
 import notifications.urls
 
 urlpatterns = [
-    url(r'^$', RedirectView.as_view(url='events/', permanent=False), name='index'),
+    url(r'^$', RedirectView.as_view(url='users/splash', permanent=False), name='index'),
     url(r'^admin/', admin.site.urls),
     url(r'^events/', include('events.urls')),
     url(r'^users/', include('users.urls')),

@@ -5,7 +5,7 @@ from django.db.models import Q
 from .models import Event
 from .forms import EventCreateForm
 from users.models import UserData, UserDonation, UserAttending
-from .utils import event_user_donation_list, event_user_donation_total, event_donation_total, event_donation_list, event_notify
+from .utils import event_user_donation_list, event_user_donation_total, event_donation_total, event_donation_list, event_notify, event_user_family, event_attendee_donation_list
 from django.contrib import messages
 from django.core.mail import send_mail
 from notifications.signals import notify
@@ -234,7 +234,15 @@ def event_attendee_list_view(request, event_id):
     notify_list = None
     #get event specified in url
     try:
-        attending = User.objects.filter(userdata__userattending__event__id=event_id)
+        event = Event.objects.get(id=event_id)
+
+        user_data_list = UserData.objects.filter(userattending__event__id=event_id)
+
+        attending_family_list = event_user_family(event, user_data_list)
+
+        donation_list = event_attendee_donation_list(event, user_data_list)
+
+        data_list = zip(user_data_list, attending_family_list, donation_list)
 
     except Event.DoesNotExist:
         raise Http404("Event does not exist")
@@ -244,12 +252,13 @@ def event_attendee_list_view(request, event_id):
         notify_list = request.user.notifications.unread()[:5]
 
     context = {
-        'user_list': attending,
+        'user': request.user,
+        'data_list': data_list,
         'user': request.user,
         'notify_list': notify_list,
     }
 
-    return render(request, 'events/eventUsers.html', context)
+    return render(request, 'events/eventAttendees.html', context)
 
 """
 Send a notification to all members to donate the an event
