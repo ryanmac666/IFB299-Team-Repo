@@ -2,6 +2,70 @@ body {
     background: white url("images/background.png");
 }
 
+section.splash{
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  overflow-y: hidden;
+  background: url("images/bg-pattern.png"), #142997;
+  /* fallback for old browsers */
+  background: url("images/bg-pattern.png"), -webkit-linear-gradient(to left, #34a8ff,#292a97);
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: url("images/bg-pattern.png"), linear-gradient(to left, #34a8ff,#292a97);
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  color: white;
+}
+section .header-content{
+    padding: 150px 0;
+}
+
+section .header-content .header-content-inner h1 {
+    margin-top: 30px;
+    margin-bottom: 30px;
+    font-size: 50px;
+}
+
+section .header-content .header-content-inner h3 {
+    margin-top: 70px;
+    margin-bottom: 70px;
+    font-size: 20px;
+}
+
+section .header-content .header-content-inner a {
+    /*text-align:center;*/
+    /*display:block;*/
+        vertical-align: middle;
+  font-family: 'Lato', 'Helvetica', 'Arial', 'sans-serif';
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  border-radius: 300px;
+  padding: 15px 45px;
+  font-size: 11px;
+  color: white;
+  border-color: white;
+  border: 1px solid;
+}
+
+section .header-content .header-content-inner a:hover,
+section .header-content .header-content-inner a:focus,
+section .header-content .header-content-inner a:active,
+section .header-content .header-content-inner a.active {
+  color: white;
+  background-color: black;
+  border-color: black;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Catamaran', 'Helvetica', 'Arial', 'sans-serif';
+  font-weight: 200;
+  letter-spacing: 1px;
+}
+
 ul.errorlist {
     padding-left: 0;
 }
@@ -12,6 +76,7 @@ ul.errorlist > li {
 
 .navbar {
     border-radius: 0;
+    margin-bottom: 0px;
 }
 
 .navbar-brand {
@@ -26,3 +91,4 @@ ul.errorlist > li {
 .glyphicon-star.active {
     color: #FDB230;
 }
+
