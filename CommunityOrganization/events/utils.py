@@ -14,7 +14,9 @@ def event_donation_total(event):
 
 	return donations
 
-
+"""
+Sum total of all donations from a single user for a single event
+"""
 def event_user_donation_total(event, user):
         donations = 0
         for event_donation in UserDonation.objects.filter(event=event).filter(user=user):
@@ -22,6 +24,9 @@ def event_user_donation_total(event, user):
 
         return donations
 
+"""
+Sum total of all donations from a single user
+"""
 def donation_total(user):
 	donationed = 0
 	for donation in UserDonation.objects.filter(user=user):
@@ -53,6 +58,9 @@ def event_donation_list(event_list):
 
 	return donations_list
 
+"""
+Return a list of the sum total donations for a list of events from a single user
+"""
 def event_user_donation_list(event_list, user):
 
 	donations_list = [];
@@ -63,6 +71,9 @@ def event_user_donation_list(event_list, user):
 
 	return donations_list
 
+"""
+Returns a list of total donations for a single event from a list of users
+"""
 def event_attendee_donation_list(event, user_list):
 
 	donations_list = [];
