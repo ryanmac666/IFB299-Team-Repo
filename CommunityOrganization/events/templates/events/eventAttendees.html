@@ -8,36 +8,39 @@
 {% block body %}
 	{% if data_list %}
 		<div class="container">
-
-			<table class="table">
-	    		<thead>
-	      			<tr>
-			        	<th>user</th>
-			        	{# ensure only admins can see advanced stats #}
-			        	{% if user.is_superuser %}
-			        		<th>family members</th>
-			        		<th>donatation</th>
-			        	{% endif %}
-			      	</tr>
-			    </thead>
-			    <tbody>
-			    {% for user_data, family, donations in data_list %}
-		    		<tr>
-				        <td><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;{{ user_data.user.username }}</td>
-			        	{# ensure only admins can see advanced stats #}
-				        {% if user.is_superuser %}
-				        	<td><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>&nbsp;{{ family }}</td>
-				        	{% if donations != 0 %}
-				        	<td><span class="glyphicon glyphicon-usd" aria-hidden="true"></span>&nbsp;{{ donations }}</td>
-				        	{% else %}
-				        	<td><span class="glyphicon glyphicon-usd" aria-hidden="true"></span>&nbsp;N.A</td>
-				        	{% endif %}
-				        {% endif %}
-			    	</tr>
-				{% endfor %}
-			    </tbody>
-		  	</table>
-		 </div>>
+			<ul class="list-group">
+				<li class="list-group-item">
+					<table class="table">
+			    		<thead>
+			      			<tr>
+					        	<th>user</th>
+					        	{# ensure only admins can see advanced stats #}
+					        	{% if user.is_superuser %}
+					        		<th>family members</th>
+					        		<th>donatation</th>
+					        	{% endif %}
+					      	</tr>
+					    </thead>
+					    <tbody>
+					    {% for user_data, family, donations in data_list %}
+				    		<tr>
+						        <td><span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp;{{ user_data.user.username }}</td>
+					        	{# ensure only admins can see advanced stats #}
+						        {% if user.is_superuser %}
+						        	<td><span class="glyphicon glyphicon-info-sign" aria-hidden="true"></span>&nbsp;{{ family }}</td>
+						        	{% if donations != 0 %}
+						        	<td><span class="glyphicon glyphicon-usd" aria-hidden="true"></span>&nbsp;{{ donations }}</td>
+						        	{% else %}
+						        	<td><span class="glyphicon glyphicon-usd" aria-hidden="true"></span>&nbsp;N.A</td>
+						        	{% endif %}
+						        {% endif %}
+					    	</tr>
+						{% endfor %}
+					    </tbody>
+				  	</table>
+				</li>
+			</ul>
+		</div>
 	{% else %}
 			<p>Nothing.</p>
 	{% endif %}
