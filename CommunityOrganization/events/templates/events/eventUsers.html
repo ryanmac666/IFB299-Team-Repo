@@ -9,11 +9,26 @@
 {% block body %}
 	{% if user_list %}
 		<div class="container">
-		<ul class="list-group">
-		    {% for user in user_list %}
-		    	<li class="list-group-item">{{ user.username }}</li>
-			{% endfor %}
-		</ul>
+            <table class="table">
+                <thead>
+                <tr>
+                    <th>user</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for user in user_list %}
+                    <tr>
+                        <td><span class="glyphicon glyphicon-user"
+                                  aria-hidden="true"></span>&nbsp;{{ user.username }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+{#		<ul class="list-group">#}
+{#		    {% for user in user_list %}#}
+{#		    	<li class="list-group-item">{{ user.username }}</li>#}
+{#			{% endfor %}#}
+{#		</ul>#}
 		</div>
 	{% else %}
 			<p>Nothing.</p>

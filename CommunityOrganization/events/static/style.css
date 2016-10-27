@@ -1,5 +1,15 @@
 body {
-    background: white url("images/background.png");
+    /*background: white url("images/background.png");*/
+  min-height: 100vh;
+  /*background: #84fdb8;*/
+  /*background: -webkit-linear-gradient(#84fdb8, #292a97);*/
+  /*background: linear-gradient(#84fdb8, #292a97);*/
+
+    background: url("images/bgnewyork.jpg") no-repeat center center scroll;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    background-size: cover;
+    -o-background-size: cover;
 }
 
 section.splash{
