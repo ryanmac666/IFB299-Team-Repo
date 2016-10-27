@@ -12,13 +12,33 @@
 <tr><td rowspan="1" colspan="3">18 - Register Attendance</td></tr>
 </thead><tbody>
 <tr>
-	<td>open</td>
-	<td>/events/</td>
+	<td>clickAndWait</td>
+	<td>link=User Login</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=id_username</td>
+	<td>usertest</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=id_password</td>
+	<td>Python123</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=button.btn.btn-primary</td>
 	<td></td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=Mid Semester Break Event</td>
+	<td>link=My Birthday</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>link=Attend</td>
 	<td></td>
 </tr>
 <tr>
@@ -29,6 +49,26 @@
 <tr>
 	<td>clickAndWait</td>
 	<td>name=submit</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>/events/</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=My Birthday</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Attendee list</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Logout</td>
 	<td></td>
 </tr>
 </tbody></table>

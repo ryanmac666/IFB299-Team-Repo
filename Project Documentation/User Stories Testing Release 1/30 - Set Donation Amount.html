@@ -12,8 +12,23 @@
 <tr><td rowspan="1" colspan="3">30 - Set Donation Amount</td></tr>
 </thead><tbody>
 <tr>
-	<td>open</td>
-	<td>/events/</td>
+	<td>clickAndWait</td>
+	<td>link=User Login</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=id_username</td>
+	<td>usertest</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=id_password</td>
+	<td>Python123</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>css=button.btn.btn-primary</td>
 	<td></td>
 </tr>
 <tr>
@@ -22,16 +37,30 @@
 	<td></td>
 </tr>
 <tr>
+	<td>click</td>
+	<td>link=Donate</td>
+	<td></td>
+</tr>
+<tr>
 	<td>type</td>
-	<td>xpath=(//input[@name='amount'])[2]</td>
+	<td>css=#donate_dropdown &gt; li.list-group-item.active &gt; form.form &gt; div.input-group &gt; input[name=&quot;amount&quot;]</td>
 	<td>10</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>xpath=(//button[@name='submit'])[2]</td>
+	<td>css=#donate_dropdown &gt; li.list-group-item.active &gt; form.form &gt; div.input-group &gt; span.input-group-btn &gt; button[name=&quot;submit&quot;]</td>
 	<td></td>
 </tr>
-
+<tr>
+	<td>verifyText</td>
+	<td>//div/ul/li[4]</td>
+	<td>10.00 contributed</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Logout</td>
+	<td></td>
+</tr>
 </tbody></table>
 </body>
 </html>

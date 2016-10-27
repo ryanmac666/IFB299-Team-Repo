@@ -12,11 +12,6 @@
 <tr><td rowspan="1" colspan="3">26 - View Attending Events</td></tr>
 </thead><tbody>
 <tr>
-	<td>open</td>
-	<td>/users/login</td>
-	<td></td>
-</tr>
-<tr>
 	<td>clickAndWait</td>
 	<td>link=User Login</td>
 	<td></td>
@@ -37,24 +32,14 @@
 	<td></td>
 </tr>
 <tr>
-	<td>open</td>
-	<td>/events/</td>
-	<td></td>
-</tr>
-<tr>
 	<td>clickAndWait</td>
 	<td>link=Users</td>
 	<td></td>
 </tr>
 <tr>
-	<td>assertText</td>
-	<td>css=h1.page-header</td>
-	<td>Attending</td>
-</tr>
-<tr>
-	<td>open</td>
-	<td>/events/</td>
-	<td></td>
+	<td>verifyText</td>
+	<td>link=My Birthday</td>
+	<td>My Birthday</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>

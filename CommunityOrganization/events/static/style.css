@@ -14,22 +14,27 @@ body {
 }
 
 .logo {
+    position: relative;
     margin-top: 3vh;
     margin-bottom: 5vh;
-    width: 1136px;
-    height:366px;
-    background: url("images/logo.png");
+    width: 500px;
+    height: 161px;
+    margin-right: auto;
+    margin-left: auto;
+    display: block;
+    background: url("images/logo1.png") no-repeat center center scroll;
 }
 
 section.splash{
   height: 100vh;
+  width: 100%;
   color: white;
   background: url("images/splash_background.jpg");
   background-size:cover;
 }
 
 section .header-content{
-    padding-left: 75px;
+    /*padding-left: 75px;*/
     text-shadow: -2px 2px 1px rgba(0, 0, 0, 0.3);;
 }
 
@@ -42,11 +47,11 @@ section .header-content .header-content-inner h3 {
 }
 
 section .header-content .header-content-inner .text-center {
-    margin-left: -200px;
+    /*margin-left: -200px;*/
 }
 
 section .header-content .header-content-inner a {
-  /*text-align:center;*/
+  text-align:center;
   /*display:block;*/
   vertical-align: middle;
   font-family: 'Lato', 'Helvetica', 'Arial', 'sans-serif';
