@@ -83,6 +83,7 @@ def event_view(request, event_id):
 
         is_attending = None
         is_volunteering = None
+        is_big_donationer = None
         notify_list = None
         notify_unread = None
 
@@ -262,7 +263,6 @@ def event_attendee_list_view(request, event_id):
     context = {
         'user': request.user,
         'data_list': data_list,
-        'user': request.user,
         'notify_list': notify_list,
     }
 
