@@ -2,7 +2,9 @@ from django.db import models
 from django.utils import timezone
 from datetime import timedelta
 from django.core.urlresolvers import reverse
-
+from django.contrib.auth.models import User
+from notifications.signals import notify
+from users.models import UserAttending
 
 class Event(models.Model):
     event_name = models.CharField(max_length=100)
@@ -11,6 +13,7 @@ class Event(models.Model):
     event_estemated_interrest = models.IntegerField(default=100)
     start_date = models.DateTimeField('start date')
     end_date = models.DateTimeField('end date')
+    honor_event = models.BooleanField(default=False);
 
     def __str__(self):
         return self.event_name
@@ -23,3 +26,5 @@ class Event(models.Model):
     def get_admin_url(self):
         info = (self._meta.app_label, self._meta.model_name)
         return reverse('admin:%s_%s_change' % info, args=(self.pk,))
+
+

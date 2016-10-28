@@ -4,33 +4,54 @@
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link rel="selenium.base" href="http://127.0.0.1:8000/" />
-<title>30 - Set Donation Amount</title>
+<title>22 -Register Volunteering</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">30 - Set Donation Amount</td></tr>
+<tr><td rowspan="1" colspan="3">22 -Register Volunteering</td></tr>
 </thead><tbody>
 <tr>
-	<td>open</td>
-	<td>/events/</td>
-	<td></td>
-</tr>
-<tr>
 	<td>clickAndWait</td>
-	<td>link=Mid Semester Break Event</td>
+	<td>link=User Login</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>xpath=(//input[@name='amount'])[2]</td>
-	<td>10</td>
+	<td>id=id_username</td>
+	<td>usertest</td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=id_password</td>
+	<td>Python123</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>xpath=(//button[@name='submit'])[2]</td>
+	<td>css=button.btn.btn-primary</td>
 	<td></td>
 </tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=My Birthday</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Volunteer</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Volunteer list</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Logout</td>
+	<td></td>
+</tr>
+
 </tbody></table>
 </body>
 </html>

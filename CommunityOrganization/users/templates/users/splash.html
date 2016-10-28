@@ -1,0 +1,31 @@
+{% extends 'events/base.html' %}
+{% block event_list_active %}active{% endblock %}
+
+{% load bootstrap3 %}
+
+{% bootstrap_css %}
+
+{% block body %}
+    <section id="splash" class="splash">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="logo">
+                    </div>
+                    <div class="header-content">
+                        <div class="header-content-inner">
+                            <h1>Organise your community for <u>FREE</u>!</h1>
+                            <h2>A community organisation website for coordinating community events.</h2>
+                            <h3>Plan. Coordinate. Succeed!</h3>
+                            <br><br>
+                            <div class="text-center">
+                                <a href="{% url 'user_view' %}"  class="splashbtn">Start now for free!</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

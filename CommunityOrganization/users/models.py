@@ -1,14 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-# import events
-
 """
-UserData Table:
-
-Small comment here
+UserData Table
 """
-
 
 class UserData(models.Model):
     events_volunteering = models.ManyToManyField('events.Event')
@@ -19,9 +14,7 @@ class UserData(models.Model):
 
 
 """
-UserDonation Table:
-
-Small comment here
+UserDonation Table
 """
 
 
@@ -34,9 +27,7 @@ class UserDonation(models.Model):
         return self.user.user.username + " Donated " + str(self.donation)
     
 """
-UserAttending Table:
-
-Small comment here
+UserAttending Table
 """
 
 
