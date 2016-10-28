@@ -3,13 +3,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head profile="http://selenium-ide.openqa.org/profiles/test-case">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="selenium.base" href="http://127.0.0.1:8000/" />
-<title>1 - Register Membership Password Requirement</title>
+<link rel="selenium.base" href="http://ifb299.ddns.net/" />
+<title>16 - View Events</title>
 </head>
 <body>
 <table cellpadding="1" cellspacing="1" border="1">
 <thead>
-<tr><td rowspan="1" colspan="3">1 - Register Membership Password Requirement</td></tr>
+<tr><td rowspan="1" colspan="3">16 - View Events</td></tr>
 </thead><tbody>
 <tr>
 	<td>clickAndWait</td>
@@ -17,29 +17,14 @@
 	<td></td>
 </tr>
 <tr>
-	<td>clickAndWait</td>
-	<td>link=Register.</td>
-	<td></td>
-</tr>
-<tr>
 	<td>type</td>
 	<td>id=id_username</td>
-	<td>usertest12345</td>
+	<td>usertest</td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>id=id_email</td>
-	<td>usertest123@gmail.com</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>id=id_password1</td>
-	<td>123</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>id=id_password2</td>
-	<td>123</td>
+	<td>id=id_password</td>
+	<td>Python123</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -47,9 +32,14 @@
 	<td></td>
 </tr>
 <tr>
-	<td>verifyText</td>
-	<td>css=span.help-block</td>
-	<td>This password is too short. It must contain at least 8 characters. This password is entirely numeric.</td>
+	<td>clickAndWait</td>
+	<td>link=Events</td>
+	<td></td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Logout</td>
+	<td></td>
 </tr>
 </tbody></table>
 </body>
