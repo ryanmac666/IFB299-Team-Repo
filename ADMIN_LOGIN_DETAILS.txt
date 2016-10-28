@@ -1,0 +1,12 @@
+admin Accounts:
+ 
+username: turnipp		
+password: password123
+ 
+username: admin
+password: Python123
+ 
+Regular Account:
+ 
+username: new1
+password: password123
